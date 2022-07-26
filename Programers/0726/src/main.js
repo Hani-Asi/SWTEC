@@ -9,12 +9,12 @@ const dummyData = [
    {
       optionName: "진라면",
       optionPrice: 1500,
-      stock: 9
+      stock: 8
    },
    {
       optionName: "삼양",
       optionPrice: 1000,
-      stock: 8
+      stock: 0
    }
 ]
 
