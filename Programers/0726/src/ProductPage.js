@@ -2,11 +2,13 @@
 {
    productID: 1,
    product: Product,
-   optionData: []
+   optionData: [],
+   selectedOption: []
 }
 */
 
 import ProductOptions from "./ProductOptions.js"
+import Cart from "./Cart.js"
 import { request } from "./api.js"
 
 export default function ProductPage({
@@ -28,6 +30,27 @@ export default function ProductPage({
       }
    })
 
+   const cart = new Cart({
+      $target: $product,
+      initialState: {
+         productName: '이디어츠 굿즈',
+         basePrise: 10000,
+         selectedOptions: [
+            {
+               optionsName: '언제나 티셔츠',
+               optionsPrice: 10000
+            },
+            {
+               optionsName: '로또',
+               optionsPrice: 10000000
+            }
+         ]
+      },
+      onRemove: () => {
+
+      }
+   })
+
    this.setState = nextState => {
       if (nextState.productID !== this.state.productID) {
          fetchOptionData(nextState.productID)
@@ -36,11 +59,13 @@ export default function ProductPage({
 
       this.state = nextState
       productOptions.setState(this.state.optionData)
+      cart.setState({
+         basePrise: product.basePrise,
+         selectedProduct: this.state.selectedProduct
+      })
    }
 
-   this.render = () => {
-
-   }
+   this.render = () => {}
    this.render()
 
    const fetchOptionData = (productID) => {
