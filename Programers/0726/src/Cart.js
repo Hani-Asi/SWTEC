@@ -30,7 +30,7 @@ export default function Cart({ $target, initialState, onRemove }) {
       const { productName, basePrice, selectedOptions } = this.state
       $cart.innerHTML = `
          <ul>
-            ${Array.isArray(selectedOptions) && selectedOptions.map(options => `
+            ${Array.isArray(selectedOptions) && selectedOptions.map(option => `
                <li>${productName} - ${option.optionName} | ${basePrice + option.optionPrice}</li>
             `).join('')}
          </ul>

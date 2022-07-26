@@ -34,15 +34,15 @@ export default function ProductPage({
       $target: $product,
       initialState: {
          productName: '이디어츠 굿즈',
-         basePrise: 10000,
+         basePrice: 1000,
          selectedOptions: [
             {
-               optionsName: '언제나 티셔츠',
-               optionsPrice: 10000
+               optionName: '언제나 티셔츠',
+               optionPrice: 500
             },
             {
-               optionsName: '로또',
-               optionsPrice: 10000000
+               optionName: '로또',
+               optionPrice: 100
             }
          ]
       },
@@ -59,10 +59,10 @@ export default function ProductPage({
 
       this.state = nextState
       productOptions.setState(this.state.optionData)
-      cart.setState({
-         basePrise: product.basePrise,
+      /*cart.setState({
+         basePrice: product.basePrice,
          selectedProduct: this.state.selectedProduct
-      })
+      })*/
    }
 
    this.render = () => {}
