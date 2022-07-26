@@ -36,7 +36,7 @@ const fetchOptionData = (productID) => {
             Promise.resolve(productOptions),
             Promise.all(
                productOptions.map(productOption => productOption.id).map(id => {
-                  return request(`/product-options-stocks?productOption.id=${id}`)
+                  return request(`/product-option-stocks?productOption.id=${id}`)
                })
             )
          ])
