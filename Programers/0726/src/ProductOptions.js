@@ -1,6 +1,6 @@
 export default function ProductOptions({ $target, initialState, onSelect }) {
    const $select = document.createElement('select')
-
+   
    $target.appendChild($select)
 
    // 상품옵션 이름 렌더링 시 상품명 + 옵션명 + 재고: n개 이런 형식으로 보여주어야 함
@@ -16,10 +16,20 @@ export default function ProductOptions({ $target, initialState, onSelect }) {
       return `${optionName} ${optionPrice > 0 ? `(옵션가 ${optionPrice}` : ''} | ${stock > 0 ? `재고 ${stock}` : '재고 없음'} )`
    }
 
+   $select.addEventListener('change', (e) => {
+      const optionID = parseInt(e.target.value)
+      const option = this.state.find(option => option.optionID === optionID)
+
+      if (option) {
+         onSelect(option)
+      }
+   })
+
    this.render = () => {
       if (this.state && Array.isArray(this.state)) {
          $select.innerHTML = `
-         ${this.state.map(option => `<option ${option.stock === 0 ? 'disabled' : ''} value="${option.id}">${createOptionFullName(option)}</option>`).join('')}
+         <option>선택하세요</option>
+         ${this.state.map(option => `<option ${option.stock === 0 ? 'disabled' : ''} value="${option.optionID}">${createOptionFullName(option)}</option>`).join('')}
          `
       }
    }
