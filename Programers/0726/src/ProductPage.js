@@ -26,25 +26,32 @@ export default function ProductPage({
       $target: $product,
       initialState: [],
       onSelect: (option) => {
-         console.log(option)
+         const nextState = {...this.state}
+         const { selectedOptions } = nextState
+
+         const selectedOptionIndex = selectedOptions.findIndex(selectedOption => 
+            selectedOption.optionID === option.optionID)
+
+         if (selectedOptionIndex > -1) {
+            nextState.selectedOptions[selectedOptionIndex].ea++
+         } else {
+            nextState.selectedOptions.push({
+               optionID: option.optionID,
+               optionName: option.optionName,
+               optionPrice: option.optionPrice,
+               ea: 1
+            })
+         }
+         this.setState(nextState)
       }
    })
 
    const cart = new Cart({
       $target: $product,
       initialState: {
-         productName: '이디어츠 굿즈',
-         basePrice: 1000,
-         selectedOptions: [
-            {
-               optionName: '언제나 티셔츠',
-               optionPrice: 500
-            },
-            {
-               optionName: '로또',
-               optionPrice: 100
-            }
-         ]
+         productName: '',
+         basePrice: 0,
+         selectedOptions: []
       },
       onRemove: () => {
 
@@ -58,11 +65,14 @@ export default function ProductPage({
       }
 
       this.state = nextState
-      productOptions.setState(this.state.optionData)
-      /*cart.setState({
+
+      const { product, selectedOptions, optionData } = this.state
+      productOptions.setState(optionData)
+      cart.setState({
+         productName: product.name,
          basePrice: product.basePrice,
-         selectedProduct: this.state.selectedProduct
-      })*/
+         selectedOptions: selectedOptions
+      })
    }
 
    this.render = () => {}
@@ -74,7 +84,8 @@ export default function ProductPage({
             this.setState({
                ...this.state,
                product,
-               optionData: []
+               optionData: [],
+               selectedOptions: []
             })
             return request(`product-options?product.id=${product.id}`)
          })

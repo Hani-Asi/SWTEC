@@ -20,10 +20,10 @@ export default function Cart({ $target, initialState, onRemove }) {
 
    const calculateTotalPrice = () => {
       const { basePrice, selectedOptions } = this.state
-
-      return selectedOptions.reduce((acc, option) => {
-         return acc + basePrice + option.optionPrice
-      }, 0)
+      
+      return selectedOptions.reduce((acc, option) => 
+         acc + ((basePrice + option.optionPrice) * option.ea), 0
+      )
    }
 
    this.render = () => {
@@ -31,11 +31,11 @@ export default function Cart({ $target, initialState, onRemove }) {
       $cart.innerHTML = `
          <ul>
             ${Array.isArray(selectedOptions) && selectedOptions.map(option => `
-               <li>${productName} - ${option.optionName} | ${basePrice + option.optionPrice}</li>
+               <li>${productName} - ${option.optionName} | ${basePrice + option.optionPrice}원, ${option.ea}개</li>
             `).join('')}
          </ul>
          <div>
-            ${calculateTotalPrice()}
+            ${calculateTotalPrice()}원
          </div>
       `
    }
