@@ -1,4 +1,5 @@
 import ProductOptions from "./ProductOptions.js"
+import { request } from "./api.js"
 
 const dummyData = [
    {
@@ -23,6 +24,19 @@ const dummyData = [
 
 const $target = document.querySelector("#app")
 
+const DEFAULT_PRODUCT_ID = 1
+
+const fetchOptionData = (productID) => {
+   return request(`/products/${productID}`)
+      .then(product => {
+         return request(`product-options?product.id=${product.id}`)
+      })
+      .then(productOptions => {
+         console.log(productOptions)
+      })
+}
+
+fetchOptionData(DEFAULT_PRODUCT_ID)
 new ProductOptions({
    $target,
    initialState: dummyData,
