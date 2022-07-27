@@ -1,0 +1,35 @@
+출력은
+[5] number undefined turn!
+[5] number undefined turn!
+[5] number undefined turn!
+[5] number undefined turn!
+[5] number undefined turn!
+
+이유
+출력물에서 ${i}는 1, 2, 3, 4, 5를 의도 했으나 for문은 함수 밖에 있어서 for문이 다 끝나고 함수가 실행되는 것이라 5번 모두 5로 출력이됩니다.
+===============================================
+해결법1. IIFE
+for(var i = 0; i < numbers.length; i++) {
+    (function(index) {
+        setTimeout(function() {
+            console.log(`[${index}] number ${numbers[index]} turn!`)
+        }, i * 1000)
+    })(i)
+}
+i가 0일때, 1일 때, 2일 때, 3일 때, 4일 때를 각각의 함수 스코프로 가두어서 처리
+이렇게 되면 setTimeout 실행 시점에 참고하는 index는 IIFE에서 인자로 넘긴 i의 값을 쓰기 때문에 문제 해결
+===============================================
+해결법2. var 대신 let 쓰기
+for(let i = 0; i < numbers.length; i++) {
+    setTimeout(function() {
+        console.log(`[${i}] number ${numbers[i]} turn!`)
+    }, i * 1000)
+}
+===============================================
+해결법3. for 대신 forEach 쓰기
+numbers.forEach(function (number, i) {
+    setTimeout(() => {
+        console.log(`[${i}] number ${numbers[i]} turn!`)
+    }, i * 1000)
+})
+forEach로 numbers를 순회하면서 각각 함수를 만들기 때문에 i의 값이 고유해짐

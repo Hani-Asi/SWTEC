@@ -1,0 +1,41 @@
+오류가 발생하는 원인
+setTimeout에 있는 함수 안에 this.members가 있는데 이 this.members가 가리키는 this.members는 함수 바로 밖에 없기 때문에 오류가 납니다.
+===============================================
+해결법1. arrow function
+function RockBand(members) {
+    this.members = members;
+    this.perform = function() {
+        setTimeout(() => {
+            this.members.forEach(function(member){
+            member.perform();
+            })
+        }, 1000)
+    }
+}
+가리키는 this.members는 함수 바로 밖에 없고 밖에 밖에 있기 때문에 함수 하나를 없애주면 됩니다.
+===============================================
+해결법2. bind 사용
+function RockBand(members) {
+    this.members = members;
+    this.perform = function() {
+        setTimeout(() => {
+            this.members.forEach(function(member){
+            member.perform();
+            })
+        }.bind(this), 1000)
+    }
+}
+bind는 함수 내 this를 특정한 this로 변경된 함수로 만드는 함수인데 끝에 this를 넘길 수 있게 됩니다.
+===============================================
+해결법3. 클로져 사용
+function RockBand(members) {
+    var that = this;
+    this.members = members;
+    this.perform = function() {
+        setTimeout(() => {
+            that.members.forEach(function(member){
+            member.perform();
+            })
+        }, 1000)
+    }
+}

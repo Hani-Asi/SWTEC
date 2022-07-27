@@ -1,0 +1,11 @@
+idiots에 name, genre, members를 정의하고
+members 안에 roto를 정의하고
+roto 안에 memberName과 play가 정의 되어있다.
+play 안에 함수가 있고 그 안에 출력이 있다.
+idiots 뒤엔 play호출이 있다.
+
+
+출력은 band undefined roto play start가 된다.
+이유는 this.memberName은 play가 속한 roto 안에는 memberName이 있지만 this.name은 play가 속한 roto 밖의 idiots에 있어 undefined가 뜬다.
+
+이걸 해결하고 싶으면 this.name이 아니라 idiots.name으로 바꾸면 해결이 된다.
