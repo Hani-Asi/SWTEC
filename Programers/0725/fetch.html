@@ -1,0 +1,33 @@
+<html>
+   <head>
+      <title>fetch</title>
+   </head>
+   <body>
+      <script>
+         /*fetch('https://kdt.roto.codes/todos')
+         .then(res => {
+            return res.json()
+         })
+         .then(data => {
+            console.log(data)
+         })*/
+
+         const $image = document.createElement('img')
+         const imageUrl = 'https://indistreet.com/_next/image?'
+
+         fetch(imageUrl)
+            .then(res => {
+               return res.blob()
+            })
+            .then(data => {
+               const url = URL.createObjectURL(dtat)
+
+               console.log(url)
+
+               $image.src = url
+
+               document.querySelector('body').appenChild($image)
+            })
+      </script>
+   </body>
+</html>

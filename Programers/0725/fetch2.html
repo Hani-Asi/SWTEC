@@ -1,0 +1,22 @@
+<html>
+   <head>
+      <title>fetch2</title>
+   </head>
+   <body>
+      <script>
+         fetch('https://kdt.roto.codes/users')
+            .then(res => {
+               if (res.ok) {
+                  return res.json()
+               }
+               throw new Error(`Stateus: ${res.status} 요청을 처리하지 못했습니다.`)
+            })
+            .then(data => {
+               console.log(data)
+            })
+            .catch(e => {
+               document.querySelector('body').innerHTML = e.message
+            })
+      </script>
+   </body>
+</html>
