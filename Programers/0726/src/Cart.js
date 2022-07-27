@@ -51,7 +51,7 @@ export default function Cart({ $target, initialState, onRemove }) {
 
       $cart.querySelectorAll('.remove').forEach($button => {
          $button.addEventListener('click', (e) => {
-            const $li = e.target.closest('.carItem') 
+            const $li = e.target.closest('.cartItem') 
             
             if ($li) {
                const { index } = $li.dataset
