@@ -56,7 +56,7 @@ export default function Cart({ $target, initialState, onRemove }) {
             if ($li) {
                const { index } = $li.dataset
 
-               alert(index)
+               onRemove(parseInt(index))
             }
          })
       })

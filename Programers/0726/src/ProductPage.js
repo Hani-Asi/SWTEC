@@ -53,8 +53,10 @@ export default function ProductPage({
          basePrice: 0,
          selectedOptions: []
       },
-      onRemove: () => {
-
+      onRemove: (selectedOptionIndex) => {
+         const nextState = {...this.state}
+         nextState.selectedOptions.splice(selectedOptionIndex, 1)
+         this.setState(nextState)
       }
    })
 
