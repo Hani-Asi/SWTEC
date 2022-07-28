@@ -5,7 +5,13 @@ import TodoForm from "./TodoForm.js"
 import TodoList from "./TodoList.js"
 
 export default function App ({ $target }) {
-   
+
+   const $userListContainer = document.createElement('div')
+   const $todoListContainer = document.createElement('div')
+
+   $target.appendChild($userListContainer)
+   $target.appendChild($todoListContainer)
+
    this.state = {
       userList: [],
       selectedUsername: null,
@@ -14,12 +20,19 @@ export default function App ({ $target }) {
    }
 
    const userList = new UserList({
-      $target,
-      initialState: this.state.userList
+      $target: $userListContainer,
+      initialState: this.state.userList,
+      onSelect: async (username) => {
+         this.setState({
+            ...this.state,
+            selectedUsername: username
+         })
+         await await fetchTodos()
+      }
    })
 
    const header = new Header({
-      $target,
+      $target: $todoListContainer,
       initialState: {
          isLoading: this.state.isTodoLoading,
          selectedUsername: this.state.selectedUsername
@@ -27,8 +40,10 @@ export default function App ({ $target }) {
    })
 
    new TodoForm({
-      $target,
+      $target: $todoListContainer,
       onSubmit: async (content) => {
+         const isFirstTodoAdd = this.state.todos.length === 0
+
          const todo = {
             content,
             isCompleted: false
@@ -46,16 +61,22 @@ export default function App ({ $target }) {
             ]
          })
          //▲ 여기까지
+         
          await request(`/${this.state.selectedUsername}`, {
             method: 'POST',
             body: JSON.stringify(todo)
          })
          await fetchTodos()
+
+         if (isFirstTodoAdd) {
+            await fetchUserList()
+         }
       }
    })
    
    this.setState = nextState => {
       this.state = nextState
+
       header.setState({
          isLoading: this.state.isTodoLoading,
          selectedUsername: this.state.selectedUsername
@@ -66,10 +87,19 @@ export default function App ({ $target }) {
          todos: this.state.todos,
          selectedUsername: this.state.selectedUsername
       })
+
+      userList.setState(this.state.userList)
+
+      this.render()
+   }
+
+   this.render = () => {
+      const { selectedUsername } = this.state
+      $todoListContainer.style.display = selectedUsername ? 'block' : 'none'
    }
 
    const todoList = new TodoList({
-      $target,
+      $target: $todoListContainer,
       initialState: {
          isTodoLoading: this.state.isTodoLoading,
          todos: this.state.todos,
@@ -79,7 +109,7 @@ export default function App ({ $target }) {
          const todoIndex = this.state.todos.findIndex(todo => todo._id === id)
 
          const nextTodos = [...this.state.todos]
-         nextTodos([todoIndex].isCompleted = !nextTodos[todoIndex].isCompleted)
+         nextTodos[todoIndex].isCompleted = !nextTodos[todoIndex].isCompleted
 
          this.setState({
             ...this.state,
@@ -137,6 +167,6 @@ export default function App ({ $target }) {
    const init = async () => {
       await fetchUserList()
    }
-
+   this.render()
    init()
 }

@@ -37,7 +37,7 @@ export default function UserList({ $target, initialState, onSelect }) {
    
    $userList.addEventListener('submit', e => {
       const $newUser = $userList.querySelector('.new-user')
-      const newUserValue = $newUser.ariaValueMax
+      const newUserValue = $newUser.value
 
       if (newUserValue.length > 0) {
          onSelect($newUser.value)

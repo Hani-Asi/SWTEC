@@ -19,7 +19,7 @@ export default function TodoList({ $target, initialState, onToggle, onRemove }) 
    }
 
    this.render = () => {
-      const { isLoading, selectedUsername, todos } = this.state
+      const { isLoading, todos } = this.state
       /* 로딩할 때 HTML을 전체 다 날리고 다시 로딩해서 깜빡인다.
       낙관적 업데이트를 사용하면 이미 로딩된 상태에서 바뀐다.
       if (isTodoLoading) {
@@ -27,11 +27,7 @@ export default function TodoList({ $target, initialState, onToggle, onRemove }) 
          return
       }
       */
-      if (!selectedUsername) {
-         return
-      }
-
-      if (!isLoading && selectedUsername && todos.length === 0) {
+      if (!isLoading && todos.length === 0) {
          $todo.innerHTML = `Todo가 없습니다.`
          return
       }
