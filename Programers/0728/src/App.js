@@ -63,7 +63,8 @@ export default function App ({ $target }) {
 
       todoList.setState({
          isLoading: this.state.isTodoLoading,
-         todos: this.state.todos
+         todos: this.state.todos,
+         selectedUsername: this.state.selectedUsername
       })
    }
 
@@ -71,7 +72,8 @@ export default function App ({ $target }) {
       $target,
       initialState: {
          isTodoLoading: this.state.isTodoLoading,
-         todos: this.state.todos
+         todos: this.state.todos,
+         selectedUsername: this.state.selectedUsername
       },
       onToggle: async (id) => {
          const todoIndex = this.state.todos.findIndex(todo => todo._id === id)
