@@ -23,6 +23,7 @@ export default function App ({ $target }) {
       $target: $userListContainer,
       initialState: this.state.userList,
       onSelect: async (username) => {
+         history.pushState(null, null, `/${username}`)
          this.setState({
             ...this.state,
             selectedUsername: username
@@ -166,6 +167,17 @@ export default function App ({ $target }) {
    
    const init = async () => {
       await fetchUserList()
+
+      // url에 특정 사용자를 나타내는 값이 있는 경우
+      const { pathname } = location
+
+      if (pathname.length > 1) {
+         this.setState({
+            ...this.state,
+            selectedUsername: pathname.substring(1)
+         })
+         await fetchTodos()
+      }
    }
    this.render()
    init()
