@@ -3,6 +3,7 @@ import UserList from "./UserList.js"
 import Header from "./Header.js"
 import TodoForm from "./TodoForm.js"
 import TodoList from "./TodoList.js"
+import { parse } from "./querystring.js"
 
 export default function App ({ $target }) {
 
@@ -23,7 +24,7 @@ export default function App ({ $target }) {
       $target: $userListContainer,
       initialState: this.state.userList,
       onSelect: async (username) => {
-         history.pushState(null, null, `/${username}`)
+         history.pushState(null, null, `/?selectedUsername=${username}`)
          this.setState({
             ...this.state,
             selectedUsername: username
@@ -151,11 +152,11 @@ export default function App ({ $target }) {
    const fetchTodos = async () => {
       const { selectedUsername } = this.state
 
-      this.setState({
-         ...this.state,
-         isTodoLoading: true
-      })
       if (selectedUsername) {
+         this.setState({
+            ...this.state,
+            isTodoLoading: true
+         })
          const todos = await request(`/${selectedUsername}`)
          this.setState({
             ...this.state,
@@ -169,16 +170,30 @@ export default function App ({ $target }) {
       await fetchUserList()
 
       // url에 특정 사용자를 나타내는 값이 있는 경우
-      const { pathname } = location
+      const { search } = location
 
-      if (pathname.length > 1) {
-         this.setState({
-            ...this.state,
-            selectedUsername: pathname.substring(1)
-         })
-         await fetchTodos()
+      if (search.length > 0) {
+         // location.search로 불러오면 맨 앞에 '?'물음표 잘라서 가져오고 querystring은 '&'엔퍼센트로 연결되어 있기 때문에 '&'로 자르고 
+         // selectedUsernameQuerystring에 나머지들이 들어오게 된다.
+         // selectedUsernameQuerystring에서 '='이퀄로 자르고 그 오른쪽에 있는 걸 가져온다.
+         // 그 가져온 값이 유저네임
+         const { selectedUsername } = parse(search.substring(1))
+
+         if (selectedUsername) {
+            this.setState({
+               ...this.state,
+               selectedUsername
+            })
+            await fetchTodos()
+         }
       }
    }
+   
    this.render()
    init()
+
+   // 뒤로가기 처리 'popstate'
+   window.addEventListener('popstate', () => {
+      init()
+   })
 }
