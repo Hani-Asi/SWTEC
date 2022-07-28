@@ -7,7 +7,8 @@ export default function App ({ $target }) {
    
    this.state = {
       username: 'roto',
-      todos: []
+      todos: [],
+      isTodoLoading: false
    }
 
    new Header({
@@ -48,12 +49,18 @@ export default function App ({ $target }) {
    this.setState = nextState => {
       this.state = nextState
 
-      todoList.setState(this.state.todos)
+      todoList.setState({
+         isTodoLoading: this.state.isTodoLoading,
+         todos: this.state.todos
+      })
    }
 
    const todoList = new TodoList({
       $target,
-      initialState: this.state.todos,
+      initialState: {
+         isTodoLoading: this.state.isTodoLoading,
+         todos: this.state.todos
+      },
       onToggle: (id) => {
          alert(`${id} 토글`)
       },
@@ -65,11 +72,16 @@ export default function App ({ $target }) {
    const fetchTodo = async () => {
       const { username } = this.state
 
+      this.setState({
+         ...this.state,
+         isTodoLoading: true
+      })
       if (username) {
          const todos = await request(`/${username}?delay=5000`)
          this.setState({
             ...this.state,
-            todos 
+            todos,
+            isTodoLoading: false
          })
       }
    }
