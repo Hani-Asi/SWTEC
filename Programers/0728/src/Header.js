@@ -1,6 +1,6 @@
 export default function Header({ $target, initialState }) {
-   const $h1 = document.createElement('h1')
-   $target.appendChild($h1)
+   const $h2 = document.createElement('h2')
+   $target.appendChild($h2)
 
    this.state = initialState
 
@@ -11,7 +11,7 @@ export default function Header({ $target, initialState }) {
 
    this.render = () => {
       const { username, isLoading } = this.state
-      $h1.innerHTML = `${username} 님의 할 일 목록 ${isLoading ? '로딩 중..' : ''}`
+      $h2.innerHTML = `${username} 님의 할 일 목록 ${isLoading ? '로딩 중..' : ''}`
    }
 
    this.render()

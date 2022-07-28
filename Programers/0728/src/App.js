@@ -1,4 +1,5 @@
 import { request } from "./api.js"
+import UserList from "./UserList.js"
 import Header from "./Header.js"
 import TodoForm from "./TodoForm.js"
 import TodoList from "./TodoList.js"
@@ -10,6 +11,11 @@ export default function App ({ $target }) {
       todos: [],
       isTodoLoading: false
    }
+
+   const userList = new UserList({
+      $target,
+      initialState: ['roto', 'lsy', 'gth', 'hjh']
+   })
 
    const header = new Header({
       $target,
