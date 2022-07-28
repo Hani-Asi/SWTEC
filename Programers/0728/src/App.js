@@ -7,21 +7,22 @@ import TodoList from "./TodoList.js"
 export default function App ({ $target }) {
    
    this.state = {
-      username: 'roto',
+      userList: [],
+      selectedUsername: null,
       todos: [],
       isTodoLoading: false
    }
 
    const userList = new UserList({
       $target,
-      initialState: ['roto', 'lsy', 'gth', 'hjh']
+      initialState: this.state.userList
    })
 
    const header = new Header({
       $target,
       initialState: {
          isLoading: this.state.isTodoLoading,
-         username: this.state.username
+         selectedUsername: this.state.selectedUsername
       }
    })
 
@@ -45,7 +46,7 @@ export default function App ({ $target }) {
             ]
          })
          //▲ 여기까지
-         await request(`/${this.state.username}`, {
+         await request(`/${this.state.selectedUsername}`, {
             method: 'POST',
             body: JSON.stringify(todo)
          })
@@ -57,7 +58,7 @@ export default function App ({ $target }) {
       this.state = nextState
       header.setState({
          isLoading: this.state.isTodoLoading,
-         username: this.state.username
+         selectedUsername: this.state.selectedUsername
       })
 
       todoList.setState({
@@ -82,7 +83,7 @@ export default function App ({ $target }) {
             ...this.state,
             todos: nextTodos
          })
-         await request(`/${this.state.username}/${id}/toggle`, {
+         await request(`/${this.state.selectedUsername}/${id}/toggle`, {
             method: 'PUT'
          })
          await fetchTodos()
@@ -97,7 +98,7 @@ export default function App ({ $target }) {
             ...this.state,
             todos: nextTodos
          })
-         await request(`/${this.state.username}/${id}`, {
+         await request(`/${this.state.selectedUsername}/${id}`, {
             method: 'DELETE'
          })
          await fetchTodos()
@@ -106,15 +107,23 @@ export default function App ({ $target }) {
       // await를 쓸 때 나는 오류인데(예약어 오류) async를 안 붙여서 나는 오류
    })
 
+   const fetchUserList = async () => {
+      const userList = await request('/users')
+      this.setState({
+         ...this.state,
+         userList
+      })
+   }
+
    const fetchTodos = async () => {
-      const { username } = this.state
+      const { selectedUsername } = this.state
 
       this.setState({
          ...this.state,
          isTodoLoading: true
       })
-      if (username) {
-         const todos = await request(`/${username}`)
+      if (selectedUsername) {
+         const todos = await request(`/${selectedUsername}`)
          this.setState({
             ...this.state,
             todos,
@@ -122,5 +131,10 @@ export default function App ({ $target }) {
          })
       }
    }
-   fetchTodos()
+   
+   const init = async () => {
+      await fetchUserList()
+   }
+
+   init()
 }
