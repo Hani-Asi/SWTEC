@@ -1,15 +1,15 @@
 import { request } from "./api.js"
 import Editor from "./Editor.js"
-import { getItem, setItem } from "./storage.js"
+import { getItem, removeItem, setItem } from "./storage.js"
 
 export default function PostEditPage({ $target, initialState }) {
    const $page = document.createElement('div')
 
    this.state = initialState
 
-   const TEMP_POST_SAVE_KEY = `temp-post-${this.state.postID}`
+   let postLocalSaveKey = `temp-post-${this.state.postID}`
 
-   const post = getItem(TEMP_POST_SAVE_KEY, {
+   const post = getItem(postLocalSaveKey, {
       title: '',
       constent: ''
    })
@@ -23,18 +23,35 @@ export default function PostEditPage({ $target, initialState }) {
          if (timer !== null) {
             clearTimeout(timer)
          }
-         timer = setTimeout(() => {
-            setItem(TEMP_POST_SAVE_KEY, {
+         timer = setTimeout(async() => {
+            setItem(postLocalSaveKey, {
                ...post,
                tempSaveDate: new Date()
             })
-         }, 1000)
+
+            const isNew = this.state.postID === 'new'
+            if (isNew) {
+               const createdPost = await request('/posts', {
+                  method: 'POST',
+                  body: JSON.stringify(post)
+               })
+               history.replaceState(null, null, `/posts/${createdPost.id}`)
+               removeItem(postLocalSaveKey)
+            } else {
+               await request(`/posts/${post.id}`, {
+                  method: 'PUT',
+                  body: JSON.stringify(post)
+               })
+               removeItem(postLocalSaveKey)
+            }
+         }, 2000)
       }
    })
 
    this.setState = async nextState => {
-      console.log(this.state.postID, nextState.postID)
       if (this.state.postID !== nextState.postID) {
+         postLocalSaveKey = `temp-post-${nextState.postID}`
+
          this.state = nextState
          await fetchPost()
          return
@@ -43,7 +60,10 @@ export default function PostEditPage({ $target, initialState }) {
       this.state = nextState
       this.render()
 
-      editor.setState(this.state.post)
+      editor.setState(this.state.post || {
+         title: '',
+         content: ''
+      })
    }
 
    this.render = () => {
@@ -55,6 +75,21 @@ export default function PostEditPage({ $target, initialState }) {
 
       if (postID !== 'new') {
          const post = await request(`/posts/${postID}`)
+
+         const tempPost = getItem(postLocalSaveKey, {
+            title: '',
+            constent: ''
+         })
+
+         if (tempPost.tempSaveDate && tempPost.tempSaveDate > post.updated_at) {
+            if (confirm('저장되지 않은 임시 데이터가 있습니다. 불러올까요?')) {
+               this.setState({
+                  ...this.state,
+                  post: tempPost
+               })
+               return
+            }
+         }
 
          this.setState({
             ...this.state,

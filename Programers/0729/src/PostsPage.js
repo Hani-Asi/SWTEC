@@ -6,7 +6,7 @@ export default function PostsPage({ $target }) {
 
    const postList = new PostList({
       $target,
-      initialState: []
+      initialState: [],
    })
 
    const $newPostButton = document.createElement('button')
