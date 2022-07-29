@@ -8,17 +8,24 @@ import PostEditPage from "./PostEditPage.js"
 // "/posts/new" - 새 post 생성
 
 export default function App({ $target }) {
-   const postsPage = new PostsPage({ $target })
-   const postEditPage = new PostEditPage({ $target, initialState: {
-      postID: 'new',
-      title: '',
-      post: {
+   const postsPage = new PostsPage({
+      $target, 
+   })
+
+   const postEditPage = new PostEditPage({
+      $target, 
+      initialState: {
+         postID: 'new',
          title: '',
-         content: ''
+         post: {
+            title: '',
+            content: ''
+         }
       }
-   }})
+   })
 
    this.route = () => {
+      $target.innerHTML = ''
       const { pathname } = window.location
 
       if (pathname === '/') {
@@ -30,4 +37,11 @@ export default function App({ $target }) {
    }
 
    this.route()
+
+   window.addEventListener('route-change', (e) => {
+      console.log(e)
+      
+      //history.pushState(null, null, nextUrl)
+      //this.route()
+   })
 } 
