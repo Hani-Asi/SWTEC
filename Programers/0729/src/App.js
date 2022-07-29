@@ -9,14 +9,13 @@ import PostEditPage from "./PostEditPage.js"
 
 export default function App({ $target }) {
    const postsPage = new PostsPage({
-      $target, 
+      $target
    })
 
    const postEditPage = new PostEditPage({
       $target, 
       initialState: {
          postID: 'new',
-         title: '',
          post: {
             title: '',
             content: ''
