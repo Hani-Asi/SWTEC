@@ -22,7 +22,7 @@ export default function Nodes({ $target, initialState, onClick })  {
             <div class="Node">
                <img src="${node.type === "DIRECTORY" ?
                   "https://cdn.roto.codes/images/directory.png" :
-                  "https://cdn.roto.codes/images/directory.png"
+                  "https://cdn.roto.codes/images/file.png"
                }">
                ${node.name}
             </div>
