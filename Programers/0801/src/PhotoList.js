@@ -14,6 +14,19 @@ export default function PhotoList({ $target, initialState, onScrollEnded }) {
    $target.appendChild($photoList)
    this.state = initialState
 
+   const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+         if (entry.isIntersecting && !this.state.isLoading) {
+            console.log('화면 끝', entry)
+            onScrollEnded()
+         }
+      })
+   }, {
+      threshold: 0.5 
+   })
+
+   let $lastLi = null
+
    this.setState = nextState => {
       this.state = nextState
       this.render()
@@ -35,15 +48,27 @@ export default function PhotoList({ $target, initialState, onScrollEnded }) {
             // 없으면 li 생성하고 $photo에 appendChild
             const $li = document.createElement('li')
             $li.setAttribute('data-id', photo.id)
-            $li.style = 'list-style: none;'
+            $li.style = 'list-style: none; min-heigh: 500px;'
             $li.innerHTML = `<img width="100%" src="${photo.imagePath}" />`
 
             $photos.appendChild($li)
          }
       })
-   }
-   this.render()
 
+      const $nextLi = $photos.querySelector('li:last-child')
+
+      if($nextLi !== null) {
+         if ($lastLi !== null) {
+            observer.unobserve($lastLi)
+         }
+
+         $lastLi = $nextLi
+         observer.observe($lastLi)
+      }
+   }
+
+   this.render()
+}
    /*
    $photoList.addEventListener('click', e => {
       if (e.target.className === 'PhotoList_loadMore' && !this.state.isLoading) {
@@ -52,7 +77,7 @@ export default function PhotoList({ $target, initialState, onScrollEnded }) {
    })
    무한 스크롤의 단점인 푸터에 접근을 못한다는 것인데 그것을 방지하기 위해 버튼을 만들어둬서 
    더보기 버튼을 클릭하면 다음 스크롤 되는 걸로 만들기도 한다
-   */
+   
 
    window.addEventListener('scroll', () => {
       const { isLoading, totalCount, photos } = this.state
@@ -66,4 +91,5 @@ export default function PhotoList({ $target, initialState, onScrollEnded }) {
       }
       // 
    })
-}
+   */
+
