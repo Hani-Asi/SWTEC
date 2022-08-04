@@ -1,4 +1,4 @@
-export default function PostList({ $target, initialState, onPostClick }) {
+export default function PostList({ $target, initialState }) {
    const $postList = document.createElement('div')
    $target.appendChild($postList)
 
@@ -26,7 +26,11 @@ export default function PostList({ $target, initialState, onPostClick }) {
       if ($li) {
          const { id } = $li.dataset
 
-         onPostClick(id)
+         window.dispatchEvent(new Event('route-change', {
+            detail: {
+               id
+            }
+         }))
       }
    })
 }

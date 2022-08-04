@@ -84,7 +84,7 @@ export default function PostEditPage({ $target, initialState }) {
          if (tempPost.tempSaveDate && tempPost.tempSaveDate > post.updated_at) {
             if (confirm('저장되지 않은 임시 데이터가 있습니다. 불러올까요?')) {
                this.setState({
-                  ...this.state,
+                  ...this.setState,
                   post: tempPost
                })
                return
