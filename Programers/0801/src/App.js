@@ -56,7 +56,7 @@ export default function App({ $target }) {
    }
 
    const initialize = async () => {
-      const totalCount = await request(`/cat-photo/count`)
+      const totalCount = await request(`/cat-photos/count`)
 
       this.setState({
          ...this.state,
