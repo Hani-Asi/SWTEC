@@ -17,8 +17,10 @@ export default function PhotoList({ $target, initialState, onScrollEnded }) {
    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
          if (entry.isIntersecting && !this.state.isLoading) {
-            console.log('화면 끝', entry)
-            onScrollEnded()
+            console.log(entry.target)
+            if (this.state.totalCount > this.state.photos.length) {
+               onScrollEnded()
+            }
          }
       })
    }, {
@@ -55,14 +57,9 @@ export default function PhotoList({ $target, initialState, onScrollEnded }) {
          }
       })
 
-      const $nextLi = $photos.querySelector('li:last-child')
+      const $lastLi = $photos.querySelector('li:last-child')
 
-      if($nextLi !== null) {
-         if ($lastLi !== null) {
-            observer.unobserve($lastLi)
-         }
-
-         $lastLi = $nextLi
+      if($lastLi !== null) {
          observer.observe($lastLi)
       }
    }

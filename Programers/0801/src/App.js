@@ -11,6 +11,7 @@ export default function App({ $target }) {
       limit: 5,
       nextStart: 0, // limit 갯수만큼 계속 더해짐
       photos: [],
+      totalCount: 0,
       isLoading: false
    }
 
@@ -55,7 +56,7 @@ export default function App({ $target }) {
    }
 
    const initialize = async () => {
-      const totalCount = request('/cat-photo/count')
+      const totalCount = await request(`/cat-photo/count`)
 
       this.setState({
          ...this.state,
