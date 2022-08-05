@@ -12,6 +12,7 @@ export default function Nodes({ $target, initialState, onClick })  {
 
    this.render = () => {
       const { isRoot, nodes } = this.state
+      
       $nodes.innerHTML = `
          ${isRoot ? '' : `
             <div class="Node">

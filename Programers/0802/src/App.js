@@ -1,5 +1,5 @@
-import Nodes from "./Nodes.js"
 import { request } from "./api.js"
+import Nodes from "./Nodes.js"
 
 export default function App({ $target }) {
    this.state = {
@@ -18,7 +18,7 @@ export default function App({ $target }) {
 
    this.setState = nextState => {
       this.state = nextState
-      
+
       nodes.setState({
          isRoot: this.state.isRoot,
          nodes: this.state.nodes

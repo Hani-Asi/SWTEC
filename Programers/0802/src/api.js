@@ -1,6 +1,6 @@
-const API_END_POINT = 'https://cat-api.roto.codes'
+const API_END_POINT = 'https://mwu.roto-cat-api.programmers.co.kr'
 
-export const request = async (url) => {
+export const request = async () => {
    try {
       const res = await fetch(`${API_END_POINT}${url}`)
 
@@ -10,6 +10,6 @@ export const request = async (url) => {
 
       return await res.json()
    } catch(e) {
-      alert(e.massage)
+      alert(e.message)
    }
 }
