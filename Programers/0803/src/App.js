@@ -5,6 +5,7 @@ import SuggestKeywords from "./SuggestKeywords.js";
 
 export default function App({ $target }) {
    this.state = {
+      keyword: '',
       keywords: []
    }
 
@@ -15,6 +16,9 @@ export default function App({ $target }) {
 
    const header = new Header({
       $target,
+      initialState: {
+         keyword: this.state.keyword
+      },
       onKeywordInput: async (keyword) => {
          if (keyword.trim().length > 1) {
             const keywords = await request(`/keywords?q=${keyword}`)
