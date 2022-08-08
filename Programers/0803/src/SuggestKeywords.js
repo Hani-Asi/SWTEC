@@ -6,20 +6,25 @@ export default function SuggestKeywords({ $target, initialState, onKeywordSelet 
    this.state = initialState
 
    this.setState = nextState => {
-      this.state = nextState
+      this.state = {
+         ...this.state,
+         ...nextState
+      }
       this.render()
    }
 
    this.render = () => {
+      const { keywords, cursor } = this.state
+
       $suggest.innerHTML = `
          <ul>
-            ${this.state.map(keyword => `
-               <li>${keyword}</li>
+            ${keywords.map((keyword, i) => `
+               <li class="${cursor === i ? 'active' : ''}">${keyword}</li>
             `).join('')}
          </ul>
       `
 
-      $suggest.style.display = this.state.length > 0 ? 'block' : 'none'
+      $suggest.style.display = keywords.length > 0 ? 'block' : 'none'
    }
    this.render()
 
@@ -28,6 +33,27 @@ export default function SuggestKeywords({ $target, initialState, onKeywordSelet 
 
       if ($li) {
          onKeywordSelet($li.textContent)
+      }
+   })
+
+   window.addEventListener('keydown', (e) => {
+      if ($suggest.style.display !== 'none') {
+         const { key } = e
+         if (key === 'ArrowUp') { // arrow up을 입력 햇을 때
+            const nextCursor = this.state.cursor - 1
+            this.setState({
+               ...this.state,
+               cursor: nextCursor < 0 ? this.state.keywords.length - 1 : nextCursor
+            })
+         } else if (key === 'ArrowDown') { // arrow down을 입력 했을 때
+            const nextCursor = this.state.cursor + 1
+            this.setState({
+               ...this.state,
+               cursor: nextCursor > this.state.keywords.length - 1 ? 0 : nextCursor
+            })
+         } else if (key === 'Enter') { // enter를 입력했을 때
+            onKeywordSelet(this.state.keywords[this.state.cursor])
+         }
       }
    })
 }
