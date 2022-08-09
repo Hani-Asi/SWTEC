@@ -1,8 +1,10 @@
 import { request } from "./api.js";
 import TodoList from "./TodoList.js";
-
+import TaskManager from "./TaskManager.js";
 
 export default function App({ $target }) {
+   const tasks = new TaskManager()
+
    this.state = {
       todos: []
    }
@@ -26,11 +28,11 @@ export default function App({ $target }) {
             todos: nextTodos
          })
 
-         await request(`/${todoId}/toggle`, {
-            method: 'PUT'
+         tasks.addTasks(async() => {
+            await request(`/${todoId}/toggle`, {
+               method: 'PUT'
+            })
          })
-
-         await fetchTodos()
       }
    })
    
@@ -53,11 +55,11 @@ export default function App({ $target }) {
             todos: nextTodos
          })
 
-         await request(`/${todoId}/toggle`, {
-            method: 'PUT'
+         tasks.addTasks(async() => {
+            await request(`/${todoId}/toggle`, {
+               method: 'PUT'
+            })
          })
-
-         await fetchTodos()
       }
    })
 
@@ -87,4 +89,11 @@ export default function App({ $target }) {
    }
 
    fetchTodos()
+
+   const $button = document.createElement('button')
+   $button.textContent = '동기화'
+
+   $target.appendChild($button)
+
+   $button.addEventListener('click', () => tasks.run())
 }
