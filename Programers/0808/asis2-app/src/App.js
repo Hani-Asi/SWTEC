@@ -1,33 +1,23 @@
-/*  
-    useEffect는 무언가 변화가 있을 때
-    감지하여 반응하는 Hook
+/*  useRef는
+    1. DOM에 직접 접근할 때 사용합니다
+    2. 지역 변수로 사용할 때 사용합니다
+    useState는 값이 변경될 때 다시 렌더링을 한다
+    useRef는 값이 변경되더라도 다시 렌더링을 하지 않습니다
 */
 
-import { useEffect, useState } from 'react'
+import { useRef } from 'react'
+import AutoCounter from './components/AutoCounter.js'
+import Input from "./components/Input.js"
 
 export default function App() {
-  const [count, setCount] = useState(0)
+  const inputRef = useRef()
 
-  useEffect(() => {
-    console.log(`Clicked ${count} times`)
-  }, [count]) // count의 변화를 감지한다
-
-  useEffect(() => {
-    console.log("Component Loaded")
-    const handleSroll = () => {
-      console.log(window.scrollY)
-    }
-
-    document.addEventListener("scroll", handleSroll) // 전역적인 이벤트를 사용할 때 쓸 수 있다
-    return () => document.removeEventListener('scroll', handleSroll) // return으로 변환한 함수는 컴포넌트가 제거될 때 실행된다
-  }, []) // 컴포넌트가 처음 로드될 때 실행된다
-  
   return (
     <div>
-      <div>You clicked {count} times</div>
-      <button onClick={() => setCount(count + 1)}>+</button>
+      <Input ref={inputRef} />
+      <button onClick={() => inputRef.current.focus()}>Focus</button>
 
-      <div style={{ heigh: 10000 }}></div>
+      <AutoCounter />
     </div>
   )
 }
