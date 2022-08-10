@@ -1,23 +1,31 @@
-/*  useRef는
-    1. DOM에 직접 접근할 때 사용합니다
-    2. 지역 변수로 사용할 때 사용합니다
-    useState는 값이 변경될 때 다시 렌더링을 한다
-    useRef는 값이 변경되더라도 다시 렌더링을 하지 않습니다
+/*  
+    사용사례 - 페이지네이션
 */
 
-import { useRef } from 'react'
-import AutoCounter from './components/AutoCounter.js'
-import Input from "./components/Input.js"
+import { useState } from "react"
+import Board from './components/Board'
+import Pagenation from './components/Pagenation'
 
 export default function App() {
-  const inputRef = useRef()
+  const [page, setPage] = useState(0)
+  const articles = new Array(100).fill().map((_, i) => ({
+    id: i,
+    title: `${i}번 게시물`
+  }))
+
+  const limit = 6
+  const offset = page * limit
 
   return (
     <div>
-      <Input ref={inputRef} />
-      <button onClick={() => inputRef.current.focus()}>Focus</button>
+      <Pagenation 
+        defaultPage={0} 
+        limit={limit} 
+        total={articles.length} 
+        onChange={setPage}
+      />
 
-      <AutoCounter />
+      <Board articles={articles.slice(offset, offset + limit)}/>
     </div>
   )
 }
