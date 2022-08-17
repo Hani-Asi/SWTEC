@@ -1,33 +1,19 @@
-/*  
-    사용사례 - 페이지네이션
+/*  useMemo
+    1. 함수 컴포넌트는 자신의 상태가 변경될 때 리렌더링된다.
+    2. 부모 컴포넌트로 부터 받는 prop이 변경될 때 리렌더링된다.
+    3. 부모 컴포넌트의 상태가 변경될 때 리렌더링된다.
 */
 
 import { useState } from "react"
-import Board from './components/Board'
-import Pagenation from './components/Pagenation'
+import ShowSum from "./components/ShowSum"
 
-function App() {
-  const [page, setPage] = useState(0)
-  const articles = new Array(100).fill().map((_, i) => ({
-    id: i,
-    title: `${i}번 게시물`
-  }))
-
-  const limit = 10
-  const offset = page * limit
+export default function App() {
+  const [label, setLabel] = useState("Result")
 
   return (
     <div>
-      <Pagenation 
-        defaultPage={0} 
-        limit={limit} 
-        total={articles.length} 
-        onChange={setPage}
-      />
-
-      <Board articles={articles.slice(offset, offset + limit)}/>
+      <button onClick={() => setLabel(label + ":")}>Change Label</button>
+      <ShowSum label={label} n={1000000000} />
     </div>
   )
 }
-
-export default App
