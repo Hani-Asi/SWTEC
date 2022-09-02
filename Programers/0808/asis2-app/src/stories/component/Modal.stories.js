@@ -12,7 +12,12 @@ export const Default = () => {
   return (
     <div>
       <button onClick={() => setVisible(true)}>Show Modal</button>
-      <Modal visible={visible}>Hello there</Modal>
+      <Modal visible={visible} onClose={() => setVisible(false)}>
+        Hello there
+        <button onClick={() => setVisible(false)} style={{ float: "right" }}>
+          Close Modal
+        </button>
+      </Modal>
     </div>
   );
 };
