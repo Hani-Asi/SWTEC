@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import ToastItem from "./ToastItem";
+import styled from "@emotion/styled";
+
+const Container = styled.div`
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1500;
+`;
 
 const ToastManager = ({ bind }) => {
   const [toasts, setToasts] = useState([]);
@@ -23,7 +31,7 @@ const ToastManager = ({ bind }) => {
   }, [bind, createToast]);
 
   return (
-    <div>
+    <Container>
       {toasts.map(({ id, message, duration }) => (
         <ToastItem
           message={message}
@@ -32,7 +40,7 @@ const ToastManager = ({ bind }) => {
           onDone={() => removeToast(id)}
         />
       ))}
-    </div>
+    </Container>
   );
 };
 

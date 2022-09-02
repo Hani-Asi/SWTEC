@@ -17,7 +17,7 @@ class Toast {
       document.body.appendChild(this.portal);
     }
 
-    ReactDOM.createPortal(
+    ReactDOM.render(
       <ToastManager
         bind={(createToast) => {
           this.createToast = createToast;

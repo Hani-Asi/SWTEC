@@ -6,6 +6,6 @@ export default {
 
 export const Default = () => {
   return (
-    <button onClick={() => Toast.show("Hello There", 3000)}>Show Toast</button>
+    <button onClick={() => Toast.show("Hello_There", 3000)}>Show Toast</button>
   );
 };
