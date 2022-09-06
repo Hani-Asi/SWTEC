@@ -1,13 +1,13 @@
 import { Plugin } from "./plugin";
 
-export class PenPlugin extends Plugin {
+export class DashPlugin extends Plugin {
   oldX = -1;
   oldY = -1;
 
   constructor(initialValues) {
     super({
       ...initialValues,
-      name: "pen",
+      name: "dash",
     });
   }
 
@@ -19,6 +19,8 @@ export class PenPlugin extends Plugin {
 
     if (this.oldX === -1) this.oldX = x;
     if (this.oldY === -1) this.oldY = y;
+
+    context.setLineDash([4, 16]);
 
     if (state === "draw-started" || state === "drawing") {
       context.beginPath();

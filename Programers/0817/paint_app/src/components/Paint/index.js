@@ -24,7 +24,7 @@ const Paint = ({
   const [currentLineWidth, setCurrentLineWidth] = useState(lineWidth);
   const [currentColor, setCurrentColor] = useState(color);
   const [currentPlugins, setCurrentPlugins] = useState({});
-  const [drawing, setDrawing] = useState(0);
+  const [drawing, setDrawing] = useState(false);
   const canvasRef = useRef();
 
   const scale = typeof window === "undefined" ? 1 : window.devicePixelRatio;
@@ -40,13 +40,18 @@ const Paint = ({
   };
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    setCurrentLineWidth(lineWidth);
+  }, [lineWidth]);
 
-    canvasRef.current.width = width * scale;
-    canvasRef.current.height = height * scale;
+  useEffect(() => {
+    setCurrentCommand(command);
+  }, [command]);
 
-    canvasRef.current.getContext("2d").scale(scale, scale);
+  useEffect(() => {
+    setCurrentColor(color);
+  }, [color]);
 
+  useEffect(() => {
     plugins.forEach((plugin) => {
       plugin.canvas = canvasRef.current;
     });
@@ -59,6 +64,15 @@ const Paint = ({
         }))
       )
     );
+  }, [canvasRef.current, plugins]);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    canvasRef.current.width = width * scale;
+    canvasRef.current.height = height * scale;
+
+    canvasRef.current.getContext("2d").scale(scale, scale);
   }, [canvasRef.current, scale]);
 
   const handleDrawStart = useCallback(
