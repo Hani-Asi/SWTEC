@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Buffer } from "buffer";
 
 const IconWrapper = styled.i`
   display: inline-block;
