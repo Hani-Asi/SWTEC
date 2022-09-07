@@ -17,9 +17,11 @@ export default {
 export const Default = (args) => <Slider {...args} />;
 
 export const VolumeControl = () => {
-  <Spacer>
-    <Icon name="volume" />;
-    <Slider style={{ width: 100, display: "inline-block" }} />;
-    <Icon name="volume-2" />;
-  </Spacer>;
+  return (
+    <Spacer>
+      <Icon name="volume" />;
+      <Slider style={{ width: 100, display: "inline-block" }} />;
+      <Icon name="volume-2" />;
+    </Spacer>
+  );
 };
