@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Text from "../Text";
+import Text from "../Text/Text";
 import Icon from "../Icon";
 
 const BreadcrumbItemContainer = styled.div`

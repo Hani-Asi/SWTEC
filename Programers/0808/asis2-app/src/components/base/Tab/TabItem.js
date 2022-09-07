@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
-import Text from "../Text";
+import Text from "../Text/Text";
 
 const TabItemWrapper = styled.div`
   display: inline-flex;

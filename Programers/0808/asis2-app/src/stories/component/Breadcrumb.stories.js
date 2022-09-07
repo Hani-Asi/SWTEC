@@ -1,4 +1,4 @@
-import Breadcrumb from "../../components/Breadcrumb";
+import Breadcrumb from "../../components/base/Breadcrumb";
 
 export default {
   title: "Component/Breadcrumb",

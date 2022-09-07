@@ -1,5 +1,5 @@
-import Text from "../Text";
-import useTimeout from "../../hooks/useTimeout";
+import Text from "../Text/Text";
+import useTimeout from "../../../hooks/useTimeout";
 import styled from "@emotion/styled";
 import { useState } from "react";
 

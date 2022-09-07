@@ -1,4 +1,4 @@
-import Input from "../../components/Input";
+import Input from "../../components/base/Input";
 
 export default {
   title: "Component/Input",

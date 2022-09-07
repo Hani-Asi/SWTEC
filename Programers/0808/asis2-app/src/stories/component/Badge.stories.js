@@ -1,5 +1,5 @@
-import Badge from "../../components/Badge";
-import Image from "../../components/Image";
+import Badge from "../../components/base/Badge";
+import Image from "../../components/base/Image";
 
 export default {
   title: "Component/Badge",
