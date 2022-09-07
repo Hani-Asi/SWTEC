@@ -1,61 +1,66 @@
 import styled from "@emotion/styled";
-import useToggle from "../../../hooks/useToggle";
+import { useToggle } from "../../../hooks";
 
 const ToggleContainer = styled.label`
-    display: inline-block
-    cursor: pointer
-    user-select: none
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const ToggleSwitch = styled.div`
-    width: 64px
-    height: 30px
-    padding: 2px
-    border-radius: 15px
-    background-color: #ccc
-    transition: background-color 0.2 ease-out
-    box-sizing: border-box
-    &:after {
-        content: ''
-        position: relative
-        left: 0
-        display: block
-        width: 26px
-        height: 26px
-        border-radius: 50%
-        background-color: white
-        transition: left 0.2s ease-out
-    }
+  width: 64px;
+  height: 30px;
+  padding: 2px;
+  border-radius: 15px;
+  background-color: #ccc;
+  transition: background-color 0.2 ease-out;
+  box-sizing: border-box;
+
+  &:after {
+    content: "";
+    position: relative;
+    left: 0;
+    display: block;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: white;
+    transition: left 0.2s ease-out;
+  }
 `;
 
 const ToggleInput = styled.input`
-    display: none
-    &:checked + div {
-        background: lightgreen
+  display: none;
+
+  &:checked + div {
+    background: lightgreen;
+  }
+
+  &:checked + div:after {
+    left: calc(100% - 26px);
+  }
+
+  &:disabled + div {
+    opacity: 0.7;
+    cursor: not-allowed;
+
+    &:after {
+      opacity: 0.7;
     }
-    &::checked + div:after {
-        left: calc(100% -26px)
-    }
-    &:disabled + div {
-        opacity: 0.7
-        cursor: not-allowed
-        &:after{
-            opacity: 0.7
-        }
-    }
+  }
 `;
 
-const Toggle = ({ name, on = false, disabled = true, onChange, ...props }) => {
+const Toggle = ({ name, on = false, disabled, onChange, ...props }) => {
   const [checked, toggle] = useToggle(on);
 
-  const handleChange = () => {
+  const handleChange = (e) => {
     toggle();
     onChange && onChange();
   };
 
   return (
     <ToggleContainer {...props}>
-      <input
+      <ToggleInput
         type="checkbox"
         name={name}
         checked={checked}

@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { element } from "prop-types";
 import React from "react";
 import BreadcrumbItem from "./BreadcrumbItem";
 

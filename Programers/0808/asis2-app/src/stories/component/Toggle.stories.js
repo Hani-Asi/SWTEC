@@ -1,4 +1,4 @@
-import Toggle from "../../hooks/useToggle";
+import { Toggle } from "../../components";
 
 export default {
   title: "Component/Toggle",
