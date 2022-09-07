@@ -1,9 +1,12 @@
+import { usePostContext } from "../../../contexts/PostProvider";
 import PostItem from "../PostItem";
 
-const PostList = ({ initialPosts }) => {
+const PostList = () => {
+  const { posts } = usePostContext();
+
   return (
     <ul>
-      {initialPosts.map((post) => (
+      {posts.map((post) => (
         <PostItem key={post.id} post={post} />
       ))}
     </ul>

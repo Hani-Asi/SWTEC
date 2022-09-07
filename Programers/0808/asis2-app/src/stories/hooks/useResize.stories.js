@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Image from "../../components/Image";
+import { Image } from "../../components";
 import useResize from "../../hooks/useResize";
 import { useState } from "react";
 
