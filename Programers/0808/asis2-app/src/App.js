@@ -1,13 +1,12 @@
 import axios from "axios";
-import useAsync from "./hooks/useAsync";
-import Header from "./components/Header";
-import Spinner from "./components/Spinner";
+import { useAsync } from "./hooks";
+import { Header, Spinner } from "./components";
 
 const App = () => {
   const initialPosts = useAsync(async () => {
     return await axios
       .get("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.date);
+      .then((response) => response.data);
   }, []);
 
   return (
