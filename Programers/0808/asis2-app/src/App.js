@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useAsync } from "./hooks";
 import { Header, Spinner } from "./components";
+import PostList from "./components/domain/PostList";
 
 const App = () => {
   const initialPosts = useAsync(async () => {
@@ -12,15 +13,11 @@ const App = () => {
   return (
     <div>
       <Header>Posts</Header>
-      <ul>
-        {initialPosts.isLoading ? (
-          <Spinner />
-        ) : (
-          (initialPosts.value || []).map((post) => (
-            <li key={post.id}>{post.title}</li>
-          ))
-        )}
-      </ul>
+      {initialPosts.isLoading ? (
+        <Spinner />
+      ) : (
+        <PostList initialPosts={initialPosts.value || []} />
+      )}
     </div>
   );
 };

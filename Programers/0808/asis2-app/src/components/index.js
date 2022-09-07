@@ -14,3 +14,8 @@ export { default as Skeleton } from "./base/Skeleton";
 export { default as Slider } from "./base/Slider";
 export { default as Spacer } from "./base/Spacer";
 export { default as Spinner } from "./base/Spinner";
+export { default as Tab } from "./base/Tab";
+export { default as Text } from "./base/Text/Text";
+export { default as Toast } from "./base/Toast";
+export { default as Toggle } from "./base/Toggle";
+export { default as Upload } from "./base/Upload";
