@@ -14,9 +14,11 @@ export const getServerSideProps = async () => {
 
 interface Props {
   posts: Post[];
+  test: number;
 }
 
-const HomePage = ({ posts }: Props) => {
+const HomePage = ({ posts, test }: Props) => {
+  console.log(test);
   return (
     <div>
       Home
