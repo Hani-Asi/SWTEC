@@ -3,9 +3,7 @@ import Link from "next/link";
 import { Post } from "../interfaces";
 
 export const getServerSideProps = async () => {
-  const { data: posts } = await axios.get(
-    "https://jsonplaceholder.typicode.com/posts"
-  );
+  const { data: posts } = await axios.get("http://localhost:3000/api/posts");
 
   return {
     props: { posts },
@@ -14,11 +12,9 @@ export const getServerSideProps = async () => {
 
 interface Props {
   posts: Post[];
-  test: number;
 }
 
-const HomePage = ({ posts, test }: Props) => {
-  console.log(test);
+const HomePage = ({ posts }: Props) => {
   return (
     <div>
       Home

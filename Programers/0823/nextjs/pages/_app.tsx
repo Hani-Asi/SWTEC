@@ -5,12 +5,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
 
-MyApp.getInitialProps = () => {
-  return {
-    pageProps: {
-      test: 100,
-    },
-  };
-};
-
 export default MyApp;
