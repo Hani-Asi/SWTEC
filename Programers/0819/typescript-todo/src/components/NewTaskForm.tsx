@@ -1,6 +1,6 @@
+import styled from "@emotion/styled";
 import { FormEvent, useState } from "react";
 import { useTasks } from "../contexts/TaskProvider";
-import styled from "@emotion/styled";
 
 const NewTaskForm = (props: any) => {
   const [task, setTask] = useState("");

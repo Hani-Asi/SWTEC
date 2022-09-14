@@ -7,7 +7,7 @@ export default {
 };
 
 export const Default = () => {
-  const task = [
+  const tasks = [
     {
       id: "01",
       content: "Todo",
@@ -26,7 +26,7 @@ export const Default = () => {
   ];
 
   return (
-    <TaskProvider initialtasks={task}>
+    <TaskProvider initialTasks={tasks}>
       <TaskList />
     </TaskProvider>
   );

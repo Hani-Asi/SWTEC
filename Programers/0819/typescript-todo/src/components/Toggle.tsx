@@ -1,6 +1,6 @@
+import styled from "@emotion/styled";
 import { ChangeEvent } from "react";
 import useToggle from "../hooks/useToggle";
-import styled from "@emotion/styled";
 
 interface Props {
   on?: boolean;
@@ -39,7 +39,6 @@ const ToggleSwitch = styled.div`
   background-color: #ccc;
   box-sizing: border-box;
   transition: background-color 0.2s ease-out;
-
   &:after {
     content: "";
     position: relative;
@@ -55,11 +54,9 @@ const ToggleSwitch = styled.div`
 
 const ToggleInput = styled.input`
   display: none;
-
   &:checked + div {
     background: lightgreen;
   }
-
   &:checked + div:after {
     left: calc(100% - 26px);
   }

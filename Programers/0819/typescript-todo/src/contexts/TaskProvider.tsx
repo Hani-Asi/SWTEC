@@ -1,6 +1,6 @@
 import { createContext, ReactChild, useContext } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { v4 } from "uuid";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 interface Task {
   id: string;
@@ -16,16 +16,15 @@ interface ITaskContext {
 }
 
 const TaskContext = createContext<ITaskContext>({} as ITaskContext);
-
 export const useTasks = () => useContext(TaskContext);
 
 interface Props {
   children: ReactChild;
-  initialtasks?: Task[];
+  initialTasks?: Task[];
 }
 
-const TaskProvider = ({ children, initialtasks = [] }: Props) => {
-  const [tasks, setTasks] = useLocalStorage<Task[]>("tasks", initialtasks);
+const TaskProvider = ({ children, initialTasks = [] }: Props) => {
+  const [tasks, setTasks] = useLocalStorage<Task[]>("tasks", initialTasks);
 
   const addTask = (content: string) => {
     setTasks([

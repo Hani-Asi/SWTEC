@@ -5,4 +5,4 @@ export default {
   component: Task,
 };
 
-export const Default = () => <Task id="asi" content="Todo" complete />;
+export const Default = () => <Task id="123" content="Todo" complete />;

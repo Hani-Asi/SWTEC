@@ -11,13 +11,15 @@ const Container = styled.div`
 
 const App = () => {
   return (
-    <TaskProvider>
-      <Container>
-        <Header>Todo</Header>
-        <NewTaskForm />
-        <TaskList css={{ marginTop: 16 }} />
-      </Container>
-    </TaskProvider>
+    <div>
+      <TaskProvider>
+        <Container>
+          <Header>ToDo</Header>
+          <NewTaskForm />
+          <TaskList />
+        </Container>
+      </TaskProvider>
+    </div>
   );
 };
 

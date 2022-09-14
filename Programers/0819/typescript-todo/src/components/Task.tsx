@@ -28,7 +28,7 @@ export default Task;
 const ListItem = styled.li`
   display: flex;
   width: 400px;
-  height: 40px;
+  height: 400px;
   align-items: center;
   padding: 0 8px;
   border-radius: 16px;
