@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useCallback, useState } from "react";
 
@@ -39,6 +39,7 @@ const CREATE_TASK = gql`
 `;
 
 export const NewTaskForm = () => {
+  const client = useApolloClient();
   const [task, setTask] = useState("");
   const [createTask] = useMutation(CREATE_TASK);
 
@@ -47,8 +48,9 @@ export const NewTaskForm = () => {
       e.preventDefault();
       createTask({ variables: { content: task } });
       setTask("");
+      client.refetchQueries({ include: ["GetTasks"] });
     },
-    [createTask, task]
+    [createTask, task, client]
   );
 
   return (
