@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@co-design/core": "^0.7.14",
+    "@co-design/hooks": "^0.6.5",
     "graphql": "^16.6.0",
     "next": "12.3.0",
     "react": "18.2.0",
