@@ -14,6 +14,7 @@
     "@co-design/hooks": "^0.6.5",
     "graphql": "^16.6.0",
     "next": "12.3.0",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
