@@ -1,4 +1,6 @@
-export default function Note({ $target }) {
+import { request } from "./api.js";
+
+export default function App({ $target }) {
   const h1 = document.querySelector(".title h1");
 
   function handleTitleClick() {

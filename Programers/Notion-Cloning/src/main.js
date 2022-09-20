@@ -1,5 +1,5 @@
-import Note from "./Note.js";
+import App from "./App.js";
 
-const $target = document.querySelector(".Note");
+const $target = document.querySelector(".App");
 
-new Note({ $target });
+new App({ $target });

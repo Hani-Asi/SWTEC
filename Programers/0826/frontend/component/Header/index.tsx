@@ -1,9 +1,19 @@
-import { Group, Heading } from "@co-design/core";
+import { Button, Group, Heading } from "@co-design/core";
 
-export const Header = () => {
+interface Props {
+  token?: string;
+}
+
+export const Header = ({ token }: Props) => {
   return (
     <Group position="apart" align="center" co={{ height: 70, padding: 16 }}>
       <Heading level={4}>AsiLog</Heading>
+
+      {token ? (
+        <Button size="small">Logout</Button>
+      ) : (
+        <Button size="small">Login</Button>
+      )}
     </Group>
   );
 };

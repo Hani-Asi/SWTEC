@@ -30,10 +30,15 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+// export const getServerSideProps = async (ctx: AppProps) => {
+//   const { token } = nookies.get(ctx);
+//   return { pageProps: { token } };
+// };
+
 function MyApp({ Component, pageProps }: AppProps) {
   const header = (
     <AppShell.Header height={70}>
-      <Header />
+      <Header token={pageProps.token} />
     </AppShell.Header>
   );
 
@@ -47,5 +52,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   );
 }
+
+MyApp.getInitialProps = async (appctx) => {
+  appctx.ctx.store = initialzeStore();
+
+  const { ctx, Component } = appctx;
+  const { loadAuth } = ctx.store.userStore;
+  const appProps = { showActions: false };
+
+  if (typeof window === "undefined") {
+    await loadAuth(ctx.req.headers.cookie);
+  }
+};
 
 export default MyApp;
