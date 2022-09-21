@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import {
   Button,
   Container,
@@ -16,9 +16,32 @@ interface FormElements extends HTMLFormElement {
   body: HTMLInputElement;
 }
 
-const CREATE_POST = gql`
-  mutation CreatePost($title: String!, $body: String!) {
-    createPost(data: { title: $title, body: $body }) {
+const GET_POST = gql`
+  query GetPost($id: ID!) {
+    post(id: $id) {
+      data {
+        id
+        attributes {
+          title
+          body
+          user {
+            data {
+              id
+              attributes {
+                username
+                email
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const UPDATE_POST = gql`
+  mutation UpdatePost($id: ID!, $title: String!, $body: String!) {
+    updatePost(id: $id, data: { title: $title, body: $body }) {
       data {
         id
       }
@@ -26,10 +49,14 @@ const CREATE_POST = gql`
   }
 `;
 
-const PostCreate = () => {
-  const [loading, toggleLoading] = useToggle();
-  const [createPost] = useMutation(CREATE_POST);
+const PostEdit = () => {
+  const [submitLoading, toggleLoading] = useToggle();
+  const [updatePost] = useMutation(UPDATE_POST);
   const router = useRouter();
+
+  const { data, loading, error } = useQuery(GET_POST, {
+    variables: { id: router.query.id },
+  });
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<FormElements>) => {
@@ -39,34 +66,39 @@ const PostCreate = () => {
       const elements: FormElements = e.currentTarget;
       const title = elements.titleInput.value;
       const body = elements.body.value;
-      await createPost({
+      await updatePost({
         refetchQueries: ["GetPosts"],
-        variables: { title, body },
+        variables: { id: router.query.id, title, body },
       });
       toggleLoading(false);
       router.push("/");
     },
-    [createPost, toggleLoading, router]
+    [updatePost, toggleLoading, router]
   );
 
   return (
     <Container size={900} padding={16} co={{ marginTop: 16 }}>
       <Heading level={3} strong>
-        Post Create
+        Post Edit
       </Heading>
       <Divider />
       <form onSubmit={handleSubmit}>
         <Stack>
-          <Input placeholder="Title" name="titleInput" />
+          <Input
+            placeholder="Title"
+            defaultValue={data.post.data.attributes.title}
+            name="titleInput"
+          />
           <Input
             component="textarea"
             rows={20}
             multiline
             placeholder="Body"
             name="body"
+            defaultValue={data.post.data.attributes.body}
           />
-          <Button type="submit" loading={loading}>
-            Create
+          <Button type="submit" loading={submitLoading}>
+            Edit
           </Button>
         </Stack>
       </form>
@@ -74,4 +106,4 @@ const PostCreate = () => {
   );
 };
 
-export default PostCreate;
+export default PostEdit;

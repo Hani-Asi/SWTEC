@@ -17,7 +17,7 @@ export const Header = ({ token }: Props) => {
 
   return (
     <Group position="apart" align="center" co={{ height: 70, padding: 16 }}>
-      <Heading level={4}>AsiLog</Heading>
+      <Heading level={4}>Asi Log</Heading>
 
       {token ? (
         <Button size="small" onClick={handleLogout}>
