@@ -1,0 +1,95 @@
+# Write your query or mutation here
+# mutation {
+#   login(input: { identifier: "l.lise413@gmail.com", password: "syl@0413" }) {
+#     jwt
+#   }
+# }
+
+mutation {
+  login(input: { identifier: "l.lise413@gmail.com", password: "syl@0413" }) {
+    jwt
+  }
+}
+
+query GetPost {
+  posts {
+    data {
+      id
+      attributes {
+        title
+        body
+        createdAt
+        user {
+          data {
+            attributes {
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation CreatePost {
+  createPost(data: { title: "Hello there", body: "Hello Asi!" }) {
+    data {
+      id
+    }
+  }
+}
+
+mutation UpdatePost {
+  updatePost(id: 7, data: { title: "Hello lise" }) {
+    data {
+      id
+      attributes {
+        title
+      }
+    }
+  }
+}
+
+mutation DeletePost {
+  deletePost(id: 7) {
+    data {
+      id
+      attributes {
+        title
+      }
+    }
+  }
+}
+
+mutation CreateComment {
+  createComment(data: { body: "comment.", post: 7 }) {
+    data {
+      id
+      attributes {
+        body
+      }
+    }
+  }
+}
+
+mutation UpdateComment {
+  updateComment(id: 7, data: { body: "this is comment" }) {
+    data {
+      id
+      attributes {
+        body
+      }
+    }
+  }
+}
+
+mutation DeleteComment {
+  deleteComment(id: 7) {
+    data {
+      id
+      attributes {
+        body
+      }
+    }
+  }
+}

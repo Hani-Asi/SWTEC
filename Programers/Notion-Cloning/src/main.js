@@ -1,5 +1,6 @@
 import App from "./App.js";
+import Editor from "./Edior.js";
 
-const $target = document.querySelector(".App");
+const $target = document.querySelector("#app");
 
-new App({ $target });
+new Editor({ $target });

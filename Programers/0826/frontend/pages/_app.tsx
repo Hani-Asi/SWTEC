@@ -5,7 +5,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { CoProvider, AppShell } from "@co-design/core";
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
 import { Header } from "../component";
 import { setContext } from "@apollo/client/link/context";
 import nookies from "nookies";
@@ -30,11 +30,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// export const getServerSideProps = async (ctx: AppProps) => {
-//   const { token } = nookies.get(ctx);
-//   return { pageProps: { token } };
-// };
-
 function MyApp({ Component, pageProps }: AppProps) {
   const header = (
     <AppShell.Header height={70}>
@@ -53,16 +48,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-MyApp.getInitialProps = async (appctx) => {
-  appctx.ctx.store = initialzeStore();
-
-  const { ctx, Component } = appctx;
-  const { loadAuth } = ctx.store.userStore;
-  const appProps = { showActions: false };
-
-  if (typeof window === "undefined") {
-    await loadAuth(ctx.req.headers.cookie);
-  }
+MyApp.getInitialProps = async (appCtx: AppContext) => {
+  const { token } = nookies.get(appCtx.ctx);
+  return { pageProps: { token } };
 };
 
 export default MyApp;

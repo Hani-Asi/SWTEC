@@ -1,16 +1,7 @@
-import { request } from "./api.js";
+import DocumentSideMenu from "./DocumentSideMenu.js";
 
 export default function App({ $target }) {
-  const h1 = document.querySelector(".title h1");
+  const documentsMenu = new DocumentSideMenu({ $target });
 
-  function handleTitleClick() {
-    const currentFontWeight = h1.style.bold;
-    let newFontWeight;
-    if (currentFontWeight === "normal") {
-      newFontWeight = "bold";
-    } else {
-      newFontWeight = "normal";
-    }
-    h1.style.bold = newFontWeight;
-  }
+  documentsMenu.render();
 }

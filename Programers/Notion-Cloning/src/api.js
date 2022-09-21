@@ -1,4 +1,4 @@
-const API_END_POINT = "https://todo-api.roto.codes/:odnac";
+const API_END_POINT = "https://mwu.roto-frontend.programmers.co.kr/documents";
 
 export const request = async (url, options) => {
   try {
