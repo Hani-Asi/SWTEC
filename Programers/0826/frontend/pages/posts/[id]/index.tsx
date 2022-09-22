@@ -9,10 +9,13 @@ import {
   Stack,
   Group,
   Button,
+  Input,
+  Card,
 } from "@co-design/core";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { User } from "../../../interface";
+import { useLoading } from "@co-design/hooks";
 
 const GET_POST = gql`
   query GetPost($id: ID!) {
@@ -51,13 +54,54 @@ const DELETE_POST = gql`
   }
 `;
 
+const CREATE_COMMENT = gql`
+  mutation CreateComment($postId: ID!, $body: String!) {
+    createComment(data: { post: $postId, body: $body }) {
+      data {
+        id
+        attributes {
+          body
+        }
+      }
+    }
+  }
+`;
+
+const GET_COMMENTS = gql`
+  query GetComments($postId: ID!) {
+    comments(
+      filters: { post: { id: { eq: $postId } } }
+      sort: ["createdAt:desc"]
+    ) {
+      data {
+        id
+        attributes {
+          body
+          user {
+            data {
+              attributes {
+                username
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const PostDetail = ({ me }: Props) => {
   const router = useRouter();
   const { data, loading, error } = useQuery(GET_POST, {
     variables: { id: router.query.id },
   });
-
+  const {
+    data: commentsData,
+    loading: commentsLoading,
+    error: commentsError,
+  } = useQuery(GET_COMMENTS, { variables: { postId: router.query.id } });
   const [deletePost] = useMutation(DELETE_POST);
+  const [createComment] = useMutation(CREATE_COMMENT);
 
   const handleDelete = useCallback(async () => {
     if (confirm("Are you sure delete?")) {
@@ -68,6 +112,22 @@ const PostDetail = ({ me }: Props) => {
       router.push("/");
     }
   }, [deletePost, router]);
+
+  const submitCreateComment = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const body = (e.currentTarget.elements as any).body.value;
+      (e.currentTarget.elements as any).body.value = "";
+
+      await createComment({
+        refetchQueries: ["GetComments"],
+        variables: { postId: router.query.id, body },
+      });
+    },
+    [createComment, router]
+  );
+
+  const [commentLoading, handleCreateComment] = useLoading(submitCreateComment);
 
   return (
     <Container size={900} padding={16} co={{ marginTop: 16 }}>
@@ -89,16 +149,47 @@ const PostDetail = ({ me }: Props) => {
               </Button>
             </Group>
           )}
-          <Heading level={3} strong>
-            {data.post.data.attributes.title}
-          </Heading>
+          <div>
+            <Heading level={3} strong>
+              {data.post.data.attributes.title}
+            </Heading>
+            <Text size="small">
+              {data.post.data.attributes.user.data.attributes.username} |&nbsp;
+              {data.post.data.attributes.user.data.attributes.email}
+            </Text>
+          </div>
           <Divider />
           <Text>{data.post.data.attributes.body}</Text>
           <Divider />
-          <Text size="small">
-            {data.post.data.attributes.user.data.attributes.username} |&nbsp;
-            {data.post.data.attributes.user.data.attributes.email}
-          </Text>
+          <Stack>
+            <Heading level={6}>Reply</Heading>
+            <form onSubmit={handleCreateComment}>
+              <Group>
+                <Input
+                  placeholder="Add a comment..."
+                  name="body"
+                  co={{ flex: 1 }}
+                />
+                <Button type="submit" loading={commentLoading}>
+                  Comment
+                </Button>
+              </Group>
+            </form>
+            {commentLoading ? (
+              <Spinner />
+            ) : (
+              commentsData?.comments.data.map((comment: any) => (
+                <Card key={comment.id}>
+                  <Text block strong size="xsmall">
+                    {comment.attributes.user.data.attributes.username}
+                  </Text>
+                  <Text block size="small">
+                    {comment.attributes.body}
+                  </Text>
+                </Card>
+              ))
+            )}
+          </Stack>
         </Stack>
       )}
     </Container>
