@@ -28,7 +28,7 @@ const CREATE_COMMENT = gql`
 `;
 
 const DELETE_COMMENT = gql`
-  mutation DeleteComment($postId: ID!) {
+  mutation DeleteComment($id: ID!) {
     deleteComment(id: $id) {
       data {
         id
