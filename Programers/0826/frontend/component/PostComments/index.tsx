@@ -37,6 +37,16 @@ const DELETE_COMMENT = gql`
   }
 `;
 
+const UPDATE_COMMENT = gql`
+  mutation DeleteComment($id: ID!, $body: String!) {
+    updateComment(id: $id, data: { body: $body }) {
+      data {
+        id
+      }
+    }
+  }
+`;
+
 const GET_COMMENTS = gql`
   query GetComments($postId: ID!) {
     comments(
@@ -72,6 +82,7 @@ export const PostComments = ({ me }: Props) => {
   });
   const [createComment] = useMutation(CREATE_COMMENT);
   const [deleteComment] = useMutation(DELETE_COMMENT);
+  const [updateComment] = useMutation(UPDATE_COMMENT);
 
   const submitCreateComment = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -98,6 +109,17 @@ export const PostComments = ({ me }: Props) => {
       }
     },
     [deleteComment]
+  );
+
+  const handleUpdateCommnet = useCallback(
+    (commnetId: number) => {
+      const body = prompt("Edit...", "");
+      updateComment({
+        refetchQueries: ["GetComments"],
+        variables: { id: commnetId, body },
+      });
+    },
+    [updateComment]
   );
 
   return (
@@ -131,7 +153,12 @@ export const PostComments = ({ me }: Props) => {
                 >
                   Delete
                 </Button>
-                <Button size="xsmall">Edit</Button>
+                <Button
+                  size="xsmall"
+                  onClick={() => handleUpdateCommnet(comment.id)}
+                >
+                  Edit
+                </Button>
               </Group>
             )}
           </Card>
