@@ -1,7 +1,7 @@
-import DocumentSideMenu from "./DocumentSideMenu.js";
+import DocumentsPage from "./DocumentsPage.js";
 
 export default function App({ $target }) {
-  const documentsMenu = new DocumentSideMenu({ $target });
+  const documentsPage = new DocumentsPage({ $target });
 
-  documentsMenu.render();
+  documentsPage.render();
 }

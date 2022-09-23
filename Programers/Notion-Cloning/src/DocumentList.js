@@ -1,4 +1,8 @@
-export default function DocumentList({ $target, initialState, DocumentClick }) {
+export default function DocumentList({
+  $target,
+  initialState,
+  onDocumentClick,
+}) {
   const $documentList = document.createElement("div");
   $target.appendChild($documentList);
 
@@ -10,19 +14,17 @@ export default function DocumentList({ $target, initialState, DocumentClick }) {
   };
 
   this.render = () => {
-    if (this.state && Array.isArray(this.state)) {
-      $documentList.innerHTML = `
+    $documentList.innerHTML = `
       <ul>
         ${this.state
           .map(
-            (documents) => `
-          <li data-id="${documents.id}">${documents.title}</li>
-        `
+            (document) => `
+            <li data-id="${document.id}">${document.title}</li>
+            `
           )
           .join("")}
       </ul>
     `;
-    }
   };
 
   this.render();

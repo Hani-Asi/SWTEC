@@ -1,8 +1,8 @@
 import { request } from "./api.js";
 import DocumentList from "./DocumentList.js";
 
-export default function DocumentSideMenu({ $target }) {
-  const $menu = document.createElement("div");
+export default function DocumentsPage({ $target }) {
+  const $page = document.createElement("div");
 
   const documentList = new DocumentList({
     $target,
@@ -10,8 +10,8 @@ export default function DocumentSideMenu({ $target }) {
   });
 
   const $newDocumentButton = document.createElement("button");
-  $newDocumentButton.textContent = "Root Document";
-  $menu.appendChild($newDocumentButton);
+  $newDocumentButton.textContent = "New Document";
+  $page.appendChild($newDocumentButton);
 
   const fetchDocuments = async () => {
     const documents = await request("/documents");
@@ -21,6 +21,6 @@ export default function DocumentSideMenu({ $target }) {
 
   this.render = async () => {
     await fetchDocuments();
-    $target.appendChild($menu);
+    $target.appendChild($page);
   };
 }
