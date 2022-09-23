@@ -21,13 +21,13 @@ export default function Editor(
         <input 
           type="text" 
           name="title" 
-          style="width: 800px; height: 100px; font-size: 50px; border: #ccc;" 
-          value="${this.state.title}" 
+          style="width: 800px; height: 100px; font-size: 50px; border: none;" 
+          value="${this.state.title} " 
         />
         <textarea 
           name="content" 
           style="width: 800px; height: 1000px;"
-        >${this.state.content}</textarea>
+        >${this.state.content} </textarea>
       `;
       isinitialize = true;
     }
