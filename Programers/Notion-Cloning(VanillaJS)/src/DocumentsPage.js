@@ -5,7 +5,7 @@ export default function DocumentsPage({ $target }) {
   const $page = document.createElement("div");
 
   const documentList = new DocumentList({
-    $target,
+    $target: $page,
     initialState: [],
   });
 
@@ -17,6 +17,12 @@ export default function DocumentsPage({ $target }) {
     const documents = await request("/documents");
 
     documentList.setState(documents);
+  };
+
+  this.setState = async () => {
+    const documents = await request(`/documents`);
+    documentList.setState(documents);
+    this.render();
   };
 
   this.render = async () => {

@@ -13,6 +13,8 @@ export default function Editor({
 
   this.setState = (nextState) => {
     this.state = nextState;
+    $editor.querySelector("[name=title]").value = this.state.title;
+    $editor.querySelector("[name=content]").value = this.state.content;
     this.render();
   };
 
@@ -40,7 +42,7 @@ export default function Editor({
 
     const name = target.getAttribute("name");
 
-    if (this.state[name]) {
+    if (this.state[name] !== undefined) {
       const nextState = {
         ...this.state,
         [name]: target.value,
