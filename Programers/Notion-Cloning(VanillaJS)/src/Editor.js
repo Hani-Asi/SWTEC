@@ -1,7 +1,8 @@
-export default function Editor(
-  { $target, initialState = { title: "", content: "" } },
-  onEditing
-) {
+export default function Editor({
+  $target,
+  initialState = { title: "", content: "" },
+  onEditing,
+}) {
   const $editor = document.createElement("div");
 
   let isinitialize = false;
@@ -26,8 +27,8 @@ export default function Editor(
         />
         <textarea 
           name="content" 
-          style="width: 800px; height: 1000px;"
-        >${this.state.content} </textarea>
+          style="width: 800px; height: 1000px; font-size: 25px;"
+        >${this.state.content}</textarea>
       `;
       isinitialize = true;
     }
@@ -44,10 +45,9 @@ export default function Editor(
         ...this.state,
         [name]: target.value,
       };
-    }
 
-    console.log(nextState);
-    this.setState(nextState);
-    onEditing(this.state);
+      this.setState(nextState);
+      onEditing(this.state);
+    }
   });
 }
