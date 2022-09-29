@@ -2,7 +2,13 @@ import DocumentsPage from "./DocumentsPage.js";
 import DocumentEditPage from "./DocumentEditPage.js";
 
 export default function App({ $target }) {
-  const documentsPage = new DocumentsPage({ $target });
+  const documentsPage = new DocumentsPage({
+    $target,
+    onDocumentClick: (id) => {
+      history.pushState(null, null, `/documents/${id}`);
+      this.route();
+    },
+  });
 
   const documentEditPage = new DocumentEditPage({
     $target,
@@ -16,7 +22,6 @@ export default function App({ $target }) {
   });
 
   this.route = () => {
-    $target.innerHTML = "";
     const { pathname } = window.location;
 
     if (pathname === "/") {

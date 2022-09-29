@@ -1,4 +1,8 @@
-export default function DocumentList({ $target, initialState }) {
+export default function DocumentList({
+  $target,
+  initialState,
+  onDocumentClick,
+}) {
   const $documentList = document.createElement("div");
   $target.appendChild($documentList);
 
@@ -30,7 +34,8 @@ export default function DocumentList({ $target, initialState }) {
 
     if ($li) {
       const { id } = $li.dataset;
-      PushManager(`/documents/${id}`);
+
+      onDocumentClick(id);
     }
   });
 }

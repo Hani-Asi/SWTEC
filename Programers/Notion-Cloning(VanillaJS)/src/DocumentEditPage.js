@@ -2,9 +2,9 @@ import { request } from "./api.js";
 import Editor from "./Editor.js";
 import { getItem, removeItem, setItem } from "./storage.js";
 
-export default function DocumentEditPage({ $target, initialState }) {
-  const $page = document.createElement("div");
+const $page = document.createElement("div");
 
+export default function DocumentEditPage({ $target, initialState }) {
   this.state = initialState;
 
   let documentLocalSaveKey = `temp-document-${this.state.documentId}`;

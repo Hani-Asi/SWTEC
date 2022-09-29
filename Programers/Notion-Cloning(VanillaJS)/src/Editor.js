@@ -23,13 +23,13 @@ export default function Editor({
       $editor.innerHTML = `
         <input 
           type="text" 
-          name="title" 
-          style="width: 800px; height: 100px; font-size: 50px; border: none;" 
+          class="editor-document"
+          name="title"
           value="${this.state.title} " 
         />
         <textarea 
-          name="content" 
-          style="width: 800px; height: 1000px; font-size: 25px;"
+          name="content"
+          class="editor-content"
         >${this.state.content}</textarea>
       `;
       isinitialize = true;

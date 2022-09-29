@@ -1,16 +1,17 @@
 import { request } from "./api.js";
 import DocumentList from "./DocumentList.js";
 
-export default function DocumentsPage({ $target }) {
+export default function DocumentsPage({ $target, onDocumentClick }) {
   const $page = document.createElement("div");
 
   const documentList = new DocumentList({
     $target: $page,
     initialState: [],
+    onDocumentClick,
   });
 
   const $newDocumentButton = document.createElement("button");
-  $newDocumentButton.textContent = "New Document";
+  $newDocumentButton.textContent = "페이지 추가";
   $page.appendChild($newDocumentButton);
 
   const fetchDocuments = async () => {
@@ -28,5 +29,9 @@ export default function DocumentsPage({ $target }) {
   this.render = async () => {
     await fetchDocuments();
     $target.appendChild($page);
+    $page.innerHTML = `
+      <div />
+    `;
   };
+  this.render();
 }
