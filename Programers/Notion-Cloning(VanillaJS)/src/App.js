@@ -33,4 +33,13 @@ export default function App({ $target }) {
   };
 
   this.route();
+
+  window.addEventListener("route-change", (e) => {
+    const { nextUrl } = e.detail;
+
+    if (nextUrl) {
+      history.pushState(null, null, nextUrl);
+      this.route();
+    }
+  });
 }

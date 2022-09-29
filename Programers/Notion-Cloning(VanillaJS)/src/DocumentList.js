@@ -35,7 +35,13 @@ export default function DocumentList({
     if ($li) {
       const { id } = $li.dataset;
 
-      onDocumentClick(id);
+      window.dispatchEvent(
+        new CustomEvent("route-change", {
+          detail: {
+            nextUrl: `/documents/${id}`,
+          },
+        })
+      );
     }
   });
 }
