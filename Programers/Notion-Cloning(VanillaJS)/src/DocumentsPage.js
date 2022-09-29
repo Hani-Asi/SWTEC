@@ -29,9 +29,6 @@ export default function DocumentsPage({ $target, onDocumentClick }) {
   this.render = async () => {
     await fetchDocuments();
     $target.appendChild($page);
-    $page.innerHTML = `
-      <div />
-    `;
   };
   this.render();
 }
