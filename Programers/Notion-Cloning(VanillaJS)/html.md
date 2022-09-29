@@ -1,3 +1,5 @@
+<link href="./src/index.css" rel="stylesheet" />
+
 <div class="container">
   <div class="sidebar-container">
     <div class="sidebar">
