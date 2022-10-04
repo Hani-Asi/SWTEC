@@ -1,8 +1,6 @@
-export default function DocumentList({
-  $target,
-  initialState,
-  onDocumentClick,
-}) {
+import { push } from "../router/router.js";
+
+export default function DocumentList({ $target, initialState }) {
   const $documentList = document.createElement("div");
   $target.appendChild($documentList);
 
@@ -34,14 +32,7 @@ export default function DocumentList({
 
     if ($li) {
       const { id } = $li.dataset;
-
-      window.dispatchEvent(
-        new CustomEvent("route-change", {
-          detail: {
-            nextUrl: `/documents/${id}`,
-          },
-        })
-      );
+      push(`/documents/${id}`);
     }
   });
 }

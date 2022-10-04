@@ -10,10 +10,10 @@ export const request = async (url, options = {}) => {
     });
 
     if (!res.ok) {
-      throw new Error("API Error");
+      return await res.json();
     }
 
-    return await res.json();
+    throw new Error("API Error");
   } catch (e) {
     alert(e.message);
   }

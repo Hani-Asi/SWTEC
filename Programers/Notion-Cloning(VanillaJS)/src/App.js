@@ -1,13 +1,11 @@
-import DocumentsPage from "./DocumentsPage.js";
-import DocumentEditPage from "./DocumentEditPage.js";
+import DocumentsPage from "./components/DocumentsPage.js";
+import DocumentEditPage from "./components/DocumentEditPage.js";
+import { initRouter } from "./Router/router.js";
 
 export default function App({ $target }) {
   const documentsPage = new DocumentsPage({
     $target,
-    onDocumentClick: (id) => {
-      history.pushState(null, null, `/documents/${id}`);
-      this.route();
-    },
+    initialState: [],
   });
 
   const documentEditPage = new DocumentEditPage({
@@ -22,24 +20,20 @@ export default function App({ $target }) {
   });
 
   this.route = () => {
+    $target.innerHTML = "";
+
     const { pathname } = window.location;
 
     if (pathname === "/") {
-      documentsPage.render();
+      documentsPage.setState();
     } else if (pathname.indexOf("/documents/") === 0) {
       const [, , documentId] = pathname.split("/");
+
       documentEditPage.setState({ documentId });
     }
   };
 
   this.route();
 
-  window.addEventListener("route-change", (e) => {
-    const { nextUrl } = e.detail;
-
-    if (nextUrl) {
-      history.pushState(null, null, nextUrl);
-      this.route();
-    }
-  });
+  initRouter(() => this.route());
 }

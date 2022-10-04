@@ -1,6 +1,7 @@
-import { request } from "./api.js";
+import { request } from "../api/api.js";
 import Editor from "./Editor.js";
-import { getItem, removeItem, setItem } from "./storage.js";
+import LinkButton from "./LinkButton.js";
+import { getItem, setItem, removeItem } from "../api/storage.js";
 
 const $page = document.createElement("div");
 
@@ -48,7 +49,7 @@ export default function DocumentEditPage({ $target, initialState }) {
           });
           removeItem(documentLocalSaveKey);
         }
-      }, 500);
+      }, 1000);
     },
   });
 
@@ -58,7 +59,7 @@ export default function DocumentEditPage({ $target, initialState }) {
 
       this.state = nextState;
 
-      if (this.state.documentId === "new") {
+      if (this.documentId === "new") {
         const document = getItem(documentLocalSaveKey, {
           title: "",
           content: "",
@@ -68,6 +69,7 @@ export default function DocumentEditPage({ $target, initialState }) {
       } else {
         await fetchDcoument();
       }
+
       return;
     }
 
@@ -116,4 +118,12 @@ export default function DocumentEditPage({ $target, initialState }) {
       });
     }
   };
+
+  new LinkButton({
+    $target: $page,
+    initialState: {
+      text: "목록으로 이동",
+      link: "/",
+    },
+  });
 }
