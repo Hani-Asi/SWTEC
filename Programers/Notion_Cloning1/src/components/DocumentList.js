@@ -14,13 +14,16 @@ export default function DocumentList({ $target, initialState }) {
   this.render = () => {
     $documentList.innerHTML = `
       <ul>
-        ${this.state
-          .map(
-            (document) => `
+        ${
+          this.state &&
+          this.state
+            .map(
+              (document) => `
             <li data-id="${document.id}">${document.title}</li>
             `
-          )
-          .join("")}
+            )
+            .join("")
+        }
       </ul>
     `;
   };

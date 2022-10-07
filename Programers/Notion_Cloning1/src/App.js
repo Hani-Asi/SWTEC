@@ -1,11 +1,10 @@
 import DocumentsPage from "./components/DocumentsPage.js";
 import DocumentEditPage from "./components/DocumentEditPage.js";
-import { initRouter } from "./Router/router.js";
+import { initRouter } from "./router/router.js";
 
 export default function App({ $target }) {
   const documentsPage = new DocumentsPage({
     $target,
-    initialState: [],
   });
 
   const documentEditPage = new DocumentEditPage({
@@ -21,14 +20,12 @@ export default function App({ $target }) {
 
   this.route = () => {
     $target.innerHTML = "";
-
     const { pathname } = window.location;
 
     if (pathname === "/") {
       documentsPage.setState();
     } else if (pathname.indexOf("/documents/") === 0) {
       const [, , documentId] = pathname.split("/");
-
       documentEditPage.setState({ documentId });
     }
   };

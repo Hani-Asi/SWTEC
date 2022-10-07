@@ -56,10 +56,9 @@ export default function DocumentEditPage({ $target, initialState }) {
   this.setState = async (nextState) => {
     if (this.state.documentId !== nextState.documentId) {
       documentLocalSaveKey = `temp-document-${nextState.documentId}`;
-
       this.state = nextState;
 
-      if (this.documentId === "new") {
+      if (this.state.documentId === "new") {
         const document = getItem(documentLocalSaveKey, {
           title: "",
           content: "",

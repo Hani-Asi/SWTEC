@@ -24,7 +24,7 @@ export default function DocumentsPage({ $target }) {
     this.render();
   };
 
-  this.render = async () => {
+  this.render = () => {
     $target.appendChild($page);
   };
 }
