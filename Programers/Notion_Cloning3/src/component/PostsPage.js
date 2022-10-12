@@ -1,26 +1,30 @@
 import PostList from "./PostList.js";
 import { request } from "../api/api.js";
+import LinkButton from "./LinkButton.js";
 
 export default function PostPage({ $target }) {
   const $page = document.createElement("div");
 
   const postList = new PostList({
-    $target,
+    $target: $page,
     initialState: [],
   });
 
-  const $newPostButton = document.createElement("button");
-  $newPostButton.textContent = "페이지 추가";
-  $page.appendChild($newPostButton);
+  new LinkButton({
+    $target: $page,
+    initialState: {
+      text: "페이지 추가",
+      link: "/documents/new",
+    },
+  });
 
-  const fetchPosts = async () => {
+  this.setState = async () => {
     const posts = await request("/documents");
-
     postList.setState(posts);
+    this.render();
   };
 
-  this.render = async () => {
-    await fetchPosts();
+  this.render = () => {
     $target.appendChild($page);
   };
 }
