@@ -1,0 +1,217 @@
+.container {
+  width: 100vw;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex: 1 1 0%;
+}
+
+.sidebar-container {
+  background: rgb(251, 251, 250);
+  flex-grow: 0;
+  flex-shrink: 0;
+  pointer-events: none;
+  position: relative;
+  z-index: 111;
+  transition: box-shadow 300ms ease 0s;
+  box-shadow: rbga(0, 0, 0, 0.024) -1px 0px 0px 0px inset;
+  width: 250px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: auto;
+  max-height: 100%;
+}
+
+.sidebar-container-header {
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  min-width: 1px;
+  min-height: 27px;
+  padding: 2px auto;
+  height: 45px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  font-size: 20px;
+  font-weight: 600;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sidebar-header {
+  display: block;
+  padding-right: 8px;
+  padding-left: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar-header2 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar-selectable {
+  width: auto;
+  padding-top: 6px;
+  padding-bottom: 20px;
+  box-shadow: transparent 0px 0px 0px inset;
+  transition: box-shadow 100ms ease 0s;
+  z-index: 1;
+  overflow: hidden;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.sidebar-document {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  width: calc(100% - 5%);
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 27px;
+  padding: 2px 5px 2px 5px;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.04);
+  color: rgb(55, 53, 47);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.topbar {
+  max-width: 100vw;
+  z-index: 100;
+  background: white;
+  user-select: none;
+
+  width: 100%;
+  height: 45px;
+  opacity: 1;
+  transition: opacity 700ms ease 0s, color 700ms ease 0s;
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  padding-left: 30px;
+  padding-right: 10px;
+}
+
+.topbar-docuemnt {
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+  font-size: 14px;
+  height: 100%;
+  flex-grow: 0;
+  margin-right: 8px;
+  min-width: 0px;
+
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  flex-shrink: 1;
+  white-space: nowrap;
+  border-radius: 3px;
+  padding-left: 30px;
+  padding-right: 6px;
+  color: rgb(55, 53, 47);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.editor-frame {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  align-items: center;
+  overflow: hidden auto;
+
+  caret-color: rgb(55, 53, 47);
+}
+
+.editor-document {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0px;
+
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+
+  color: rgb(55, 53, 47);
+  word-break: break-word;
+  font-weight: 700;
+  line-height: 1.2;
+  font-size: 40px;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  cursor: text;
+  white-space: pre-wrap;
+
+  padding-top: 150px;
+  padding-bottom: 5px;
+  padding-left: calc(96px + env(safe-area-inset-left));
+  padding-right: calc(96px + env(safe-area-inset-right));
+
+  z-index: 3;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.editor-content {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  min-width: 0px;
+
+  word-break: break-word;
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.5;
+
+  padding-top: 10px;
+  padding-bottom: calc(600px + env(safe-area-inset-left));
+  padding-left: calc(96px + env(safe-area-inset-left));
+  padding-right: calc(96px + env(safe-area-inset-right));
+}

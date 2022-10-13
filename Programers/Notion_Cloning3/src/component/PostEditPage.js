@@ -1,124 +1,79 @@
 import Editor from "./Editor.js";
-import { getItem, setItem, removeItem } from "../api/storage.js";
-import { request } from "../api/api.js";
-import LinkButton from "./LinkButton.js";
+import { fetchPost, fetchUpdatePost } from "../api/fetch.js";
+import { getItem, setItem } from "../api/storage.js";
 
-export default function PostEditPage({ $target, initialState }) {
+export default function PostEditPage({ $target, initialState, listRendering }) {
   const $page = document.createElement("div");
+
+  $page.className = "postEditPage";
 
   this.state = initialState;
 
-  let postLocalSaveKey = `temp-post-${this.state.postId}`;
-
-  const post = getItem(postLocalSaveKey, {
-    title: "",
-    content: "",
-  });
-
+  let postLocalSaveKey = `temp-post-${this.state.id}`;
   let timer = null;
 
   const editor = new Editor({
     $target: $page,
-    initialState: post,
+    initialState: {
+      title: "",
+    },
     onEditing: (post) => {
       if (timer !== null) {
         clearTimeout(timer);
       }
       timer = setTimeout(async () => {
-        setItem(postLocalSaveKey, {
-          ...post,
-          tempSaveDate: new Date(),
-        });
-
-        const isNew = this.state.postId === "new";
-        if (isNew) {
-          const createdPost = await request("/documents", {
-            method: "POST",
-            body: JSON.stringify(post),
-          });
-          history.replaceState(null, null, `/documents/${createdPost.id}`);
-          removeItem(postLocalSaveKey);
-
-          this.setState({
-            postId: createdPost.id,
-          });
-        } else {
-          await request(`/documents/${post.id}`, {
-            method: "PUT",
-            body: JSON.stringify(post),
-          });
-          removeItem(postLocalSaveKey);
-        }
+        await fetchUpdatePost(post);
+        await listRendering();
       }, 1000);
+
+      setItem(postLocalSaveKey, {
+        ...post,
+        tempSaveData: new Date(),
+      });
+    },
+    subPostRender: (id) => {
+      this.setState({ id });
+      history.replaceState(null, null, `/documents/${id}`);
     },
   });
 
   this.setState = async (nextState) => {
-    if (this.state.postId !== nextState.postId) {
-      postLocalSaveKey = `temp-post-${nextState.postId}`;
-      this.state = nextState;
-
-      if (this.state.postId === "new") {
-        const post = getItem(postLocalSaveKey, {
-          title: "",
-          content: "",
-        });
-        this.render();
-        editor.setState(post);
-      } else {
-        await fetchPost();
-      }
-      return;
-    }
-
     this.state = nextState;
-    this.render();
+    postLocalSaveKey = `temp-post-${this.state.id}`;
 
-    editor.setState(
-      this.state.post || {
-        title: "",
-        content: "",
-      }
-    );
+    const post = await fetchLocalStorage();
+
+    editor.setState(post);
+
+    await fetchUpdatePost(this.state);
+    await listRendering();
+    await this.render();
   };
 
-  this.render = () => {
+  const fetchLocalStorage = async () => {
+    const post = fetchPost(this.state.id);
+    const tempPost = getItem(postLocalSaveKey, {
+      title: "",
+      content: "",
+      parent: null,
+    });
+
+    if (tempPost.tempSaveData && tempPost.tempSaveData > post.updatedAt) {
+      if (confirm("There is unsaved data. Are you sure you want to edit?")) {
+        const updatedPost = {
+          ...post,
+          title: tempPost.title,
+          content: tempPost.content,
+        };
+
+        return updatedPost;
+      }
+    }
+
+    return post;
+  };
+
+  this.render = async () => {
     $target.appendChild($page);
   };
-
-  const fetchPost = async () => {
-    const { postId } = this.state;
-
-    if (postId !== "new") {
-      const post = await request(`/documents/${postId}`);
-
-      const tempPost = getItem(postLocalSaveKey, {
-        title: "",
-        content: "",
-      });
-
-      if (tempPost.tempSaveDate && tempPost.tempSaveDate > post.updated_at) {
-        if (confirm("There is unsaved data. Are you sure you want to edit?")) {
-          this.setState({
-            ...this.state,
-            post: tempPost,
-          });
-          return;
-        }
-      }
-
-      this.setState({
-        ...this.state,
-        post,
-      });
-    }
-  };
-
-  new LinkButton({
-    $target: $page,
-    initialState: {
-      text: "목록으로",
-      link: "/",
-    },
-  });
 }
