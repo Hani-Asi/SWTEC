@@ -1,11 +1,17 @@
-import PostsPage from "./component/PostsPage.js";
-import { initRouter } from "./router/router.js";
+import PostEditPage from "./components/PostEditPage.js";
+import PostsPage from "./components/PostsPage.js";
+import { initRouter } from "./utils/router.js";
 
-export default function App({ $target, initialState }) {
+export default function App({ $target }) {
   const postsPage = new PostsPage({
     $target,
     initialState: [],
-    listRendering: () => setState(),
+  });
+
+  const postEditPage = new PostEditPage({
+    $target,
+    initialState: {},
+    listRendering: () => postsPage.setState(),
   });
 
   this.route = async () => {
@@ -18,9 +24,10 @@ export default function App({ $target, initialState }) {
     } else if (pathname.indexOf("/documents") === 0) {
       const [, , id] = pathname.split("/");
 
-      await postsPage.setState({ id });
+      await postsPage.setState();
+      await postEditPage.setState({ id });
     } else {
-      $target.innerHTML = "<h1>404 Not Found</h1>";
+      $target.innerHTML = "<h1>404 NOT FOUND</h1>";
     }
   };
 

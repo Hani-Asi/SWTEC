@@ -1,19 +1,29 @@
 import PostList from "./PostList.js";
-import { fetchList, fetchNewPost, fetchDeletePost } from "../api/fetch.js";
+import Editor from "./Editor.js";
+import {
+  fetchList,
+  fetchPost,
+  fetchNewPost,
+  fetchDeletePost,
+  fetchUpdatePost,
+} from "../api/fetch.js";
 import { push } from "../router/router.js";
+import { getItem, setItem } from "../api/storage.js";
 
-export default function PostPage({ $target, initialState }) {
-  const $page = document.createElement("div");
-  const $button = document.createElement("button");
+export default function PostPage({ $target, initialState, listRendering }) {
+  const $listPage = document.createElement("div");
+  const $editorPage = document.createElement("div");
 
   this.state = initialState;
 
-  $page.className = "postsPage";
-  $button.className = "newDocument-Button";
-  $button.textContent = "+ 새 페이지";
+  let postLocalSaveKey = `temp-post-${this.state.id}`;
+  let timer = null;
+
+  $listPage.className = "container";
+  $editorPage.className = "frame";
 
   const postList = new PostList({
-    $target: $page,
+    $target: $listPage,
     initialState: [],
     onCreateSubPost: async (parentId) => {
       const post = {
@@ -34,26 +44,72 @@ export default function PostPage({ $target, initialState }) {
     },
   });
 
-  this.setState = async () => {
+  const editor = new Editor({
+    $target: $editorPage,
+    initialState: {
+      title: "",
+    },
+    onEditing: (post) => {
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(async () => {
+        await fetchUpdatePost(post);
+        await listRendering();
+      }, 1000);
+
+      setItem(postLocalSaveKey, {
+        ...post,
+        tempSaveData: new Date(),
+      });
+    },
+    subPostRender: (id) => {
+      this.setState({ id });
+      history.replaceState(null, null, `/documents/${id}`);
+    },
+  });
+
+  this.setState = async (nextState) => {
     const posts = await fetchList();
     postList.setState(posts);
+
+    this.state = nextState;
+    postLocalSaveKey = `temp-post-${this.state.id}`;
+
+    const post = await fetchLocalStorage();
+
+    editor.setState(post);
+
+    await fetchUpdatePost(this.state);
+    await listRendering();
     this.render();
   };
 
-  this.render = () => {
-    $target.appendChild($page);
-    $target.appendChild($button);
+  const fetchLocalStorage = async () => {
+    const post = fetchPost(this.state.id);
+    const tempPost = getItem(postLocalSaveKey, {
+      title: "",
+      content: "",
+      parent: null,
+    });
+
+    if (tempPost.tempSaveData && tempPost.tempSaveData > post.updatedAt) {
+      if (confirm("There is unsaved data. Are you sure you want to edit?")) {
+        const updatedPost = {
+          ...post,
+          title: tempPost.title,
+          content: tempPost.content,
+        };
+
+        return updatedPost;
+      }
+    }
+
+    return post;
   };
 
-  $button.addEventListener("click", async (e) => {
-    if (e.target.className === "newDocument-Button") {
-      const post = {
-        title: "",
-        content: "",
-        parent: null,
-      };
-      const newPost = await fetchNewPost(post);
-      push(`/documents/${newPost.id}`);
-    }
-  });
+  this.render = () => {
+    $target.appendChild($listPage);
+    $target.appendChild($editorPage);
+  };
 }

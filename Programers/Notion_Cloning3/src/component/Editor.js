@@ -8,6 +8,8 @@ export default function Editor({
 }) {
   const $editor = document.createElement("div");
 
+  $editor.className = "editor-frame";
+
   let isinitialize = false;
 
   this.state = initialState;
@@ -26,8 +28,8 @@ export default function Editor({
     const { title, content } = this.state;
     if (!isinitialize) {
       $editor.innerHTML = `
-        <input type="text" name="title" style="width:600px; height:100px" value="${title}" />
-        <textarea name="content" style="width:600px; height:400px;">${content}</textarea>
+        <input type="text" name="title" class="editor-document" style="width:600px; height:100px" value="${title}" />
+        <textarea name="content" class="editor-content" style="width:600px; height:400px;">${content}</textarea>
       `;
 
       isinitialize = true;

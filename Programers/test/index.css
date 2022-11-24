@@ -7,9 +7,7 @@
 }
 
 .sidebar-container {
-  width: 500px;
   background: rgb(251, 251, 250);
-  background: rgba(0, 0, 0, 0.04);
   flex-grow: 0;
   flex-shrink: 0;
   pointer-events: none;
@@ -47,7 +45,7 @@
   width: 100%;
 }
 
-.sidebar-header {
+.sidebar-container2-header {
   display: block;
   padding-right: 8px;
   padding-left: 8px;
@@ -55,7 +53,7 @@
   height: 100%;
 }
 
-.sidebar-header2 {
+.sidebar-header {
   display: flex;
   align-items: center;
   width: 100%;
@@ -93,7 +91,6 @@
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.04);
   color: rgb(55, 53, 47);
-  pointer-events: all;
 
   white-space: nowrap;
   overflow: hidden;
